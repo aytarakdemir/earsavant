@@ -14,6 +14,12 @@ const routes: Routes = [
     canActivate: [AuthorizationGuard]
   },
   {
+    path: 'login',
+    title: 'Login - Comms',
+    loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule),
+    canActivate: [AuthorizationGuard]
+  },
+  {
     path: 'about',
     title: 'About - Comms',
     loadChildren: () => import('./modules/about/about.module').then(m => m.AboutModule),
