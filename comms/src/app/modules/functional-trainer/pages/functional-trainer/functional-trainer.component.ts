@@ -28,8 +28,14 @@ export class FunctionalTrainerComponent {
   selectedRandomNote!: string;
 
   constructor() {
-    this.selectedNoteList = this.getKeyNotesForOctave('C', 3);
-    this.setRandomNote('C');
+    this.randomizeWorkingKey();
+  }
+
+  randomizeWorkingKey(): void {
+    const root = this.notes[Math.floor(Math.random() * this.notes.length)];
+    this.selectedNoteList = this.getKeyNotesForOctave(root, 3);
+    this.setRandomNote(root);
+    this.playChord([this.selectedNoteList[0], this.selectedNoteList[2], this.selectedNoteList[4]]);
   }
 
   setRandomNote(rootNote: string) {
