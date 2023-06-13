@@ -20,6 +20,12 @@ const routes: Routes = [
     canActivate: [AuthorizationGuard]
   },
   {
+    path: 'functional',
+    title: 'Functional - Comms',
+    loadChildren: () => import('./modules/functional-trainer/functional-trainer.module').then(m => m.FunctionalTrainerModule),
+    canActivate: [AuthorizationGuard]
+  },
+  {
     path: 'about',
     title: 'About - Comms',
     loadChildren: () => import('./modules/about/about.module').then(m => m.AboutModule),

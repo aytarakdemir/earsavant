@@ -9,14 +9,4 @@ import * as Tone from 'tone';
 export class HomeComponent {
   constructor() {}
 
-  playNote(note: string) {
-    const synth = new Tone.Synth().toDestination();
-    synth.triggerAttackRelease(note, '8n');
-  }
-
-  playChord(notes: string[]) {
-    notes.forEach((note: string) => {
-      this.playNote(note);
-    });
-  }
 }
