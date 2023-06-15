@@ -2,11 +2,11 @@
   <h2>Functional Trainer</h2>
 
   <div class="cet-scale">
-    <button *ngFor="let note of selectedNoteList" class="cet-note" (click)="playNote(note)">O</button>
+    <button *ngFor="let note of this.keySrv.selectedNoteList()" class="cet-note" (click)="this.audioSrv.playNote(note)">O</button>
   </div>
   
   <div>
-    <button (click)="playNote(selectedRandomNote)" >Random Note</button>
-    <button (click)="randomizeWorkingKey()">New Key</button>
+    <button (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())" >Random Note</button>
+    <button (click)="this.keySrv.randomizeWorkingKey()">New Key</button>
   </div>
 </div>
