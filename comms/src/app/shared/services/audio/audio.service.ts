@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import * as Tone from 'tone';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AudioService {
-
-  constructor() { }
+  constructor() {}
 
   playNote(note: string): void {
     const synth = new Tone.Synth().toDestination();

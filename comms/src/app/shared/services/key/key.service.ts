@@ -3,10 +3,9 @@ import { AudioService } from '../audio/audio.service';
 import { signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class KeyService {
-
   private notes: string[] = [
     'C',
     'C#',
@@ -23,30 +22,52 @@ export class KeyService {
   ];
   private octaves: string[] = ['0', '1', '2', '3', '4', '5', '6'];
 
-  public selectedNoteList: WritableSignal<string[]> = signal(['C', 'D', 'E', 'F', 'G', 'A', 'B']);
+  public selectedNoteList: WritableSignal<string[]> = signal([
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'A',
+    'B',
+  ]);
+  public selectedSolfegeList: WritableSignal<string[]> = signal([
+    'Do',
+    'Re',
+    'Mi',
+    'Fa',
+    'So',
+    'La',
+    'Ti',
+  ]);
   public selectedRandomNote: WritableSignal<string> = signal('C');
 
   constructor(private audioSrv: AudioService) {
     this.randomizeWorkingKey();
   }
 
-  randomizeWorkingKey(): void {
+  public randomizeWorkingKey(): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedNoteList.set(this.getKeyNotesForOctave(root, 3));
     this.setRandomNote(root);
-    this.audioSrv.playChord([this.selectedNoteList()[0], this.selectedNoteList()[2], this.selectedNoteList()[4]]);
+    this.audioSrv.playChord([
+      this.selectedNoteList()[0],
+      this.selectedNoteList()[2],
+      this.selectedNoteList()[4],
+    ]);
   }
 
-  setRandomNote(rootNote: string) {
+  public setRandomNote(rootNote: string) {
     const selectedKey = this.getKey(rootNote);
     const selectedNote =
       selectedKey[Math.floor(Math.random() * selectedKey.length)];
     this.selectedRandomNote.set(
       selectedNote +
-      this.octaves[Math.floor(Math.random() * this.octaves.length)]);
+        this.octaves[Math.floor(Math.random() * this.octaves.length)]
+    );
   }
 
-  getKeyNotesForOctave(rootNote: string, octave: number): string[] {
+  public getKeyNotesForOctave(rootNote: string, octave: number): string[] {
     const keyNotes = this.getKey(rootNote).map((note) => {
       const selectedKey = this.getKey(rootNote);
       var smallestNoteIndex = this.notes.length;
@@ -73,7 +94,10 @@ export class KeyService {
     return keyNotes;
   }
 
-  getKey(rootNote: string, steps: number[] = [0, 2, 4, 5, 7, 9, 11]): string[] {
+  private getKey(
+    rootNote: string,
+    steps: number[] = [0, 2, 4, 5, 7, 9, 11]
+  ): string[] {
     this.notes.indexOf(rootNote);
     var keyNotes: string[] = [];
 
