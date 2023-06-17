@@ -20,7 +20,7 @@ export class KeyService {
     'A#',
     'B',
   ];
-  private octaves: string[] = ['1', '2', '3', '4', '5', '6'];
+  private octaves: string[] = ['0', '1', '2', '3', '4', '5', '6'];
 
   public selectedNoteList: WritableSignal<string[]> = signal([
     'C4',
@@ -43,7 +43,7 @@ export class KeyService {
   public selectedRandomNote: WritableSignal<string> = signal('C');
   public selectedRootNote: WritableSignal<string> = signal('C');
 
-  private randomizerWorkingOctave = 2;
+  private randomizerWorkingOctave = 3;
 
   constructor(private audioSrv: AudioService) {
     this.randomizeWorkingKey();
@@ -52,8 +52,10 @@ export class KeyService {
   public randomizeWorkingKey(): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedRootNote.set(root);
-    this.selectedNoteList.set(this.getKeyNotesForOctave(root, this.randomizerWorkingOctave));
-    this.setRandomNote(root);
+    this.selectedNoteList.set(
+      this.getKeyNotesForOctave(root, this.randomizerWorkingOctave)
+    );
+    this.setRandomNote(root, { low: 2, high: this.octaves.length - 1 });
     this.audioSrv.playProgression([
       [
         this.selectedNoteList()[0],
@@ -75,18 +77,37 @@ export class KeyService {
         this.selectedNoteList()[2],
         this.selectedNoteList()[4],
       ],
-  
-    ]
-  );
+    ]);
   }
 
-  public setRandomNote(rootNote: string) {
+  public setRandomNote(
+    rootNote: string,
+    octaveRange: { low: number; high: number }
+  ) {
+    if (
+      octaveRange.low > octaveRange.high ||
+      octaveRange.low < 0 ||
+      octaveRange.low > this.octaves.length - 1 ||
+      octaveRange.high < 0 ||
+      octaveRange.high > this.octaves.length - 1
+    )
+      throw new Error('Invalid octave range!');
+
     const selectedKey = this.getKey(rootNote);
     const selectedNote =
       selectedKey[Math.floor(Math.random() * selectedKey.length)];
     this.selectedRandomNote.set(
       selectedNote +
-        this.octaves[Math.floor(Math.random() * this.octaves.length)]
+        this.octaves[
+          octaveRange.low +
+            Math.floor(
+              Math.random() *
+                Math.min(
+                  this.octaves.length,
+                  octaveRange.high - octaveRange.low
+                )
+            )
+        ]
     );
   }
 
