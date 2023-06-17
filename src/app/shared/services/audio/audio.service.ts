@@ -7,17 +7,28 @@ import * as Tone from 'tone';
 export class AudioService {
   constructor() {}
 
-  private progressionActive: WritableSignal<boolean> = signal(false);
+  private chordProgressionActive: WritableSignal<boolean> = signal(false);
+  private melodyActive: WritableSignal<boolean> = signal(false);
+
   public start() {
     Tone.start();
+    Tone.Destination.volume.value = -10
   }
 
   private setProgressionActive() {
-    this.progressionActive.set(true);
+    this.chordProgressionActive.set(true);
   }
 
   private setProgressionPassive() {
-    this.progressionActive.set(false);
+    this.chordProgressionActive.set(false);
+  }
+
+  private setMelodyActive() {
+    this.melodyActive.set(true);
+  }
+
+  private setMelodyPassive() {
+    this.melodyActive.set(false);
   }
 
   public playNote(
@@ -35,12 +46,18 @@ export class AudioService {
 
   public playMelody(
     notes: string[],
-    spaceTime: number = 0.5,
-    sustainTime: number = 0.5
+    spaceTime: number = 0.2,
+    sustainTime: number = 0.2
   ) {
-    notes.forEach((note, index) => {
-      this.playNote(note, index * spaceTime, sustainTime);
-    });
+    if (!this.melodyActive()) {
+      this.setMelodyActive();
+      notes.forEach((note, index) => {
+        this.playNote(note, index * spaceTime, sustainTime);
+      });
+      setTimeout(() => {
+        this.setMelodyPassive();
+      }, (notes.length - 1) * spaceTime + sustainTime * 5000);
+    }
   }
 
   public playChord(
@@ -55,10 +72,10 @@ export class AudioService {
 
   public playProgression(
     chords: string[][],
-    spaceTime: number = 0.5,
-    sustainTime: number = 0.5
+    spaceTime: number = 0.3,
+    sustainTime: number = 0.3
   ) {
-    if (!this.progressionActive()) {
+    if (!this.chordProgressionActive()) {
       this.setProgressionActive();
       chords.forEach((chord, index) => {
         this.playChord(chord, index * spaceTime, sustainTime);
