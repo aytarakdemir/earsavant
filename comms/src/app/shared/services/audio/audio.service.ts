@@ -7,14 +7,21 @@ import * as Tone from 'tone';
 export class AudioService {
   constructor() {}
 
-  playNote(note: string): void {
+  public playNote(note: string, lag: number = 0): void {
     const synth = new Tone.Synth().toDestination();
-    synth.triggerAttackRelease(note, '8n');
+    const now = Tone.now();
+    synth.triggerAttackRelease(note, '8n', now + lag);
   }
 
-  playChord(notes: string[]): void {
+  public playChord(notes: string[], lag:number = 0): void {
     notes.forEach((note: string) => {
-      this.playNote(note);
+      this.playNote(note, lag);
+    });
+  }
+
+  public playProgression(chords: string[][]) {
+    chords.forEach((chord, index) => {
+      this.playChord(chord, index * 0.5);  
     });
   }
 }

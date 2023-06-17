@@ -50,11 +50,30 @@ export class KeyService {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedNoteList.set(this.getKeyNotesForOctave(root, 3));
     this.setRandomNote(root);
-    this.audioSrv.playChord([
-      this.selectedNoteList()[0],
-      this.selectedNoteList()[2],
-      this.selectedNoteList()[4],
-    ]);
+    this.audioSrv.playProgression([
+      [
+        this.selectedNoteList()[0],
+        this.selectedNoteList()[2],
+        this.selectedNoteList()[4],
+      ],
+      [
+        this.selectedNoteList()[3],
+        this.selectedNoteList()[5],
+        this.selectedNoteList()[0],
+      ],
+      [
+        this.selectedNoteList()[4],
+        this.selectedNoteList()[6],
+        this.selectedNoteList()[1],
+      ],
+      [
+        this.selectedNoteList()[0],
+        this.selectedNoteList()[2],
+        this.selectedNoteList()[4],
+      ],
+  
+    ]
+  );
   }
 
   public setRandomNote(rootNote: string) {
