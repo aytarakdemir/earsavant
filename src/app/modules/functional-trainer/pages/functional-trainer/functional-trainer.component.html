@@ -5,10 +5,12 @@
 
   <ng-container *ngIf="trainerStarted()">
     <div class="cet-scale">
-      <button
+      <button 
         *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
         class="cet-note"
+        id="{{ 'note-' + i }}"
         (click)="userGuess(note)"
+        
       >
         {{
           this.keySrv.selectedSolfegeList()[

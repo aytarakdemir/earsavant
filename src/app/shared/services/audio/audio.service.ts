@@ -41,13 +41,17 @@ export class AudioService {
       const now = Tone.now();
       synth.triggerAttack(note, now + lag);
       synth.triggerRelease(now + lag + sustainTime);
+
+      setTimeout(() => {
+        synth.dispose();
+      }, (lag + sustainTime) * 5000);
     }
   }
 
   public playMelody(
     notes: string[],
-    spaceTime: number = 0.2,
-    sustainTime: number = 0.2
+    spaceTime: number = 0.3,
+    sustainTime: number = 0.3
   ) {
     if (!this.melodyActive()) {
       this.setMelodyActive();

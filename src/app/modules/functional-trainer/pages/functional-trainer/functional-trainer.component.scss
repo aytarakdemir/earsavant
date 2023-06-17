@@ -10,6 +10,24 @@ button {
   height: 40px;
   border: none;
   background-color: var.$color-alpha;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0084B8;
+  }
+}
+.cet-playing{
+  background-color: green;
+  &:hover {
+    background-color: green;
+  }
+}
+
+.cet-failure {
+  background-color: red;
+  &:hover {
+    background-color: red;
+  }
 }
 
 .cet-functional-wrapper {
