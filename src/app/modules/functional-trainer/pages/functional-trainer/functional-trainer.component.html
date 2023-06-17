@@ -8,7 +8,7 @@
       <button
         *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
         class="cet-note"
-        (click)="this.audioSrv.playNote(note)"
+        (click)="userGuess(note)"
       >
         {{
           this.keySrv.selectedSolfegeList()[
@@ -17,36 +17,49 @@
         }}
       </button>
     </div>
-  
+
     <div class="cet-controls">
-      <button (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())">
+      <button
+        (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
+      >
         Random Note
       </button>
-      <button (click)="this.audioSrv.playProgression([
-        [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-        [
-          this.keySrv.selectedNoteList()[3],
-          this.keySrv.selectedNoteList()[5],
-          this.keySrv.selectedNoteList()[0],
-        ],
-        [
-          this.keySrv.selectedNoteList()[4],
-          this.keySrv.selectedNoteList()[6],
-          this.keySrv.selectedNoteList()[1],
-        ],
-        [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-    
-      ])">Play Progression</button>
-      <button (click)="this.keySrv.randomizeWorkingKey()">New Key</button>
+      <button
+        (click)="
+          this.audioSrv.playProgression([
+            [
+              this.keySrv.selectedNoteList()[0],
+              this.keySrv.selectedNoteList()[2],
+              this.keySrv.selectedNoteList()[4]
+            ],
+            [
+              this.keySrv.selectedNoteList()[3],
+              this.keySrv.selectedNoteList()[5],
+              this.keySrv.selectedNoteList()[0]
+            ],
+            [
+              this.keySrv.selectedNoteList()[4],
+              this.keySrv.selectedNoteList()[6],
+              this.keySrv.selectedNoteList()[1]
+            ],
+            [
+              this.keySrv.selectedNoteList()[0],
+              this.keySrv.selectedNoteList()[2],
+              this.keySrv.selectedNoteList()[4]
+            ]
+          ])
+        "
+      >
+        Play Progression
+      </button>
+      <button (click)="setNewKey()">New Key</button>
     </div>
 
+    <div
+      class="cet-info"
+      [class.cet-info__default]="guessFeedback() === GuessState.default"
+      [class.cet-info__success]="guessFeedback() === GuessState.success"
+      [class.cet-info__fail]="guessFeedback() === GuessState.failure"
+    ></div>
   </ng-container>
 </div>

@@ -40,3 +40,28 @@ button {
   
 
 }
+
+
+.cet-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  min-width: 100px;
+  height: 40px;
+  border: none;
+  background-color: gray;
+
+  
+  &__default {
+    background-color: gray;
+  }
+  &__success {
+    background-color: green;
+  }
+  &__fail {
+    background-color: red;
+  }
+
+
+}

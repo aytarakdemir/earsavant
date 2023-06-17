@@ -20,7 +20,7 @@ export class KeyService {
     'A#',
     'B',
   ];
-  private octaves: string[] = ['0', '1', '2', '3', '4', '5', '6'];
+  private octaves: string[] = ['1', '2', '3', '4', '5', '6'];
 
   public selectedNoteList: WritableSignal<string[]> = signal([
     'C4',
@@ -41,8 +41,9 @@ export class KeyService {
     'Ti',
   ]);
   public selectedRandomNote: WritableSignal<string> = signal('C');
+  public selectedRootNote: WritableSignal<string> = signal('C');
 
-  private randomizerWorkingOctave = 3;
+  private randomizerWorkingOctave = 2;
 
   constructor(private audioSrv: AudioService) {
     this.randomizeWorkingKey();
@@ -50,6 +51,7 @@ export class KeyService {
 
   public randomizeWorkingKey(): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
+    this.selectedRootNote.set(root);
     this.selectedNoteList.set(this.getKeyNotesForOctave(root, this.randomizerWorkingOctave));
     this.setRandomNote(root);
     this.audioSrv.playProgression([
