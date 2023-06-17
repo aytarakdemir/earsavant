@@ -1,5 +1,17 @@
 @use "/src/styles/variables.scss" as var;
 
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  min-width: 100px;
+  height: 40px;
+  border: none;
+  background-color: var.$color-alpha;
+}
+
 .cet-functional-wrapper {
   display: flex;
   flex-direction: column;
@@ -14,14 +26,9 @@
   gap: 3px;
 
   .cet-note {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
     width: 40px;
     height: 40px;
-    border: none;
-    background-color: var.$color-alpha;
+    min-width: unset;
   }
 }
 
@@ -30,15 +37,6 @@
   flex-direction: row;
   align-items: center;
   gap: 3px;
+  
 
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    min-width: 100px;
-    height: 40px;
-    border: none;
-    background-color: var.$color-alpha;
-  }
 }

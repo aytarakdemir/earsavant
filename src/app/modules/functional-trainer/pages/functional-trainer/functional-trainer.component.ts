@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
+
 
 @Component({
   selector: 'app-functional-trainer',
@@ -8,7 +9,21 @@ import { KeyService } from 'src/app/shared/services/key/key.service';
   styleUrls: ['./functional-trainer.component.scss'],
 })
 export class FunctionalTrainerComponent {
+
+  trainerStarted: WritableSignal<boolean> = signal(false);
+  
   constructor(public audioSrv: AudioService, public keySrv: KeyService) {
+
+  }
+
+  ngOnInit() {
+    
+  }
+  
+  initialize() {
+    this.audioSrv.start();
+    this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
   }
+
 }
