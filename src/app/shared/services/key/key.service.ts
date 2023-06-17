@@ -23,13 +23,13 @@ export class KeyService {
   private octaves: string[] = ['0', '1', '2', '3', '4', '5', '6'];
 
   public selectedNoteList: WritableSignal<string[]> = signal([
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'A',
-    'B',
+    'C4',
+    'D4',
+    'E4',
+    'F4',
+    'G4',
+    'A4',
+    'B4',
   ]);
   public selectedSolfegeList: WritableSignal<string[]> = signal([
     'Do',
@@ -42,13 +42,15 @@ export class KeyService {
   ]);
   public selectedRandomNote: WritableSignal<string> = signal('C');
 
+  private randomizerWorkingOctave = 3;
+
   constructor(private audioSrv: AudioService) {
     this.randomizeWorkingKey();
   }
 
   public randomizeWorkingKey(): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
-    this.selectedNoteList.set(this.getKeyNotesForOctave(root, 3));
+    this.selectedNoteList.set(this.getKeyNotesForOctave(root, this.randomizerWorkingOctave));
     this.setRandomNote(root);
     this.audioSrv.playProgression([
       [

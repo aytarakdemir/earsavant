@@ -19,6 +19,29 @@
     <button (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())">
       Random Note
     </button>
+    <button (click)="this.audioSrv.playProgression([
+      [
+        this.keySrv.selectedNoteList()[0],
+        this.keySrv.selectedNoteList()[2],
+        this.keySrv.selectedNoteList()[4],
+      ],
+      [
+        this.keySrv.selectedNoteList()[3],
+        this.keySrv.selectedNoteList()[5],
+        this.keySrv.selectedNoteList()[0],
+      ],
+      [
+        this.keySrv.selectedNoteList()[4],
+        this.keySrv.selectedNoteList()[6],
+        this.keySrv.selectedNoteList()[1],
+      ],
+      [
+        this.keySrv.selectedNoteList()[0],
+        this.keySrv.selectedNoteList()[2],
+        this.keySrv.selectedNoteList()[4],
+      ],
+  
+    ])">Play Progression</button>
     <button (click)="this.keySrv.randomizeWorkingKey()">New Key</button>
   </div>
 </div>
