@@ -33,6 +33,16 @@ export class AudioService {
     }
   }
 
+  public playMelody(
+    notes: string[],
+    spaceTime: number = 0.5,
+    sustainTime: number = 0.5
+  ) {
+    notes.forEach((note, index) => {
+      this.playNote(note, index * spaceTime, sustainTime);
+    });
+  }
+
   public playChord(
     notes: string[],
     lag: number = 0,
