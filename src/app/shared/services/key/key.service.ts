@@ -1,6 +1,7 @@
 import { Injectable, WritableSignal, effect } from '@angular/core';
 import { AudioService } from '../audio/audio.service';
 import { signal } from '@angular/core';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -49,13 +50,13 @@ export class KeyService {
     this.randomizeWorkingKey();
   }
 
-  public randomizeWorkingKey(): void {
+  public randomizeWorkingKey(possibleNotes: number[] = _.range(this.selectedNoteList().length)): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedRootNote.set(root);
     this.selectedNoteList.set(
       this.getKeyNotesForOctave(root, this.randomizerWorkingOctave)
     );
-    this.setRandomNote(root, { low: 2, high: this.octaves.length - 1 });
+    this.setRandomNote(root, { low: 2, high: this.octaves.length - 1 }, possibleNotes);
     this.audioSrv.playProgression([
       [
         this.selectedNoteList()[0],
@@ -82,7 +83,8 @@ export class KeyService {
 
   public setRandomNote(
     rootNote: string,
-    octaveRange: { low: number; high: number }
+    octaveRange: { low: number; high: number },
+    possibleNotes: number[] = _.range(this.selectedNoteList().length)
   ) {
     if (
       octaveRange.low > octaveRange.high ||
@@ -95,7 +97,7 @@ export class KeyService {
 
     const selectedKey = this.getKey(rootNote);
     const selectedNote =
-      selectedKey[Math.floor(Math.random() * selectedKey.length)];
+      selectedKey[possibleNotes[Math.floor(Math.random() * selectedKey.length) % possibleNotes.length]];
     this.selectedRandomNote.set(
       selectedNote +
         this.octaves[

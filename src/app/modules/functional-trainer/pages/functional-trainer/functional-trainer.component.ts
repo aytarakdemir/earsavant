@@ -47,9 +47,6 @@ export class FunctionalTrainerComponent {
           this.colorChangeTime * 0.001,
           this.colorChangeTime * 0.001
         );
-        console.log(
-          _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1)
-        );
         this.colorPlaying(
           _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1),
           this.colorChangeTime
