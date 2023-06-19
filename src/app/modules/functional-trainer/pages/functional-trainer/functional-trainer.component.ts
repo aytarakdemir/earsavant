@@ -15,14 +15,17 @@ export class FunctionalTrainerComponent {
 
   guessFeedback: WritableSignal<GuessState> = signal(GuessState.default);
 
-
   GuessState = GuessState;
 
   msColorChangeTime: number = 300;
 
   msAfterUserIsAllowedToClick: number = this.msColorChangeTime;
 
-  constructor(public audioSrv: AudioService, public keySrv: KeyService, public scoreSrv: ScoreService) {}
+  constructor(
+    public audioSrv: AudioService,
+    public keySrv: KeyService,
+    public scoreSrv: ScoreService
+  ) {}
 
   ngOnInit() {}
 
@@ -39,6 +42,7 @@ export class FunctionalTrainerComponent {
 
     if (guessNote === correctNote) {
       this.scoreSrv.increaseCorrect();
+      this.scoreSrv.stopRecordScore();
       this.guessFeedback.set(GuessState.success);
       const keyToWalkOn = this.changeOctave(
         Number(note.slice(-1)) -
@@ -97,7 +101,7 @@ export class FunctionalTrainerComponent {
       this.coloringActive.set(true);
       indices.forEach((i, index) => {
         let note = document.getElementById('note-' + i);
-  
+
         if (note) {
           setTimeout(() => {
             note?.classList.add('cet-playing');

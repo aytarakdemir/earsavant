@@ -1,6 +1,5 @@
 @use "/src/styles/variables.scss" as var;
 
-
 button {
   display: flex;
   align-items: center;
@@ -11,12 +10,19 @@ button {
   border: none;
   background-color: var.$color-alpha;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3;
 
   &:hover {
-    background-color: #0084B8;
+    background-color: #0084b8;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
   }
 }
-.cet-playing{
+.cet-playing {
   background-color: green;
   &:hover {
     background-color: green;
@@ -55,31 +61,4 @@ button {
   flex-direction: row;
   align-items: center;
   gap: 3px;
-  
-
-}
-
-
-.cet-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  min-width: 100px;
-  height: 40px;
-  border: none;
-  background-color: gray;
-
-  
-  &__default {
-    background-color: gray;
-  }
-  &__success {
-    background-color: green;
-  }
-  &__fail {
-    background-color: red;
-  }
-
-
 }

@@ -7,7 +7,7 @@ export class ScoreService {
 
   public currentScore: WritableSignal<{correct: number, wrong: number}> = signal({correct: 0, wrong: 0});
 
-  private scoreRecording: WritableSignal<boolean> = signal(false);
+  public scoreRecording: WritableSignal<boolean> = signal(false);
 
   constructor() { }
 
@@ -15,7 +15,7 @@ export class ScoreService {
     this.scoreRecording.set(true);
   }
 
-  private stopRecordScore() {
+  public stopRecordScore() {
     this.scoreRecording.set(false);
   }
 
@@ -24,7 +24,6 @@ export class ScoreService {
       this.currentScore.mutate(obj => {
         obj.correct = obj.correct + 1;
       })
-      this.stopRecordScore();
     }
   }
 
@@ -33,7 +32,6 @@ export class ScoreService {
       this.currentScore.mutate(obj => {
         obj.wrong = obj.wrong + 1;
       })
-      this.stopRecordScore();
     }
   }
 

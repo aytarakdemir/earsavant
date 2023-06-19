@@ -24,7 +24,7 @@
       <button
         (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
       >
-        Random Note
+        Note
       </button>
       <button
         (click)="
@@ -54,7 +54,7 @@
       >
         Play Progression
       </button>
-      <button (click)="setNewKey()">New Key</button>
+      <button [disabled]="this.scoreSrv.scoreRecording()" (click)="setNewKey()">New Key</button>
     </div>
 
     <div class="cet-score">
@@ -62,12 +62,5 @@
       <p>Wrong: {{this.scoreSrv.currentScore().wrong}}</p>
 
     </div>
-
-    <div
-      class="cet-info"
-      [class.cet-info__default]="guessFeedback() === GuessState.default"
-      [class.cet-info__success]="guessFeedback() === GuessState.success"
-      [class.cet-info__fail]="guessFeedback() === GuessState.failure"
-    ></div>
   </ng-container>
 </div>
