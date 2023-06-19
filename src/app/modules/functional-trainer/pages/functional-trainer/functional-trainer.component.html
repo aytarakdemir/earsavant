@@ -7,6 +7,7 @@
     <div class="cet-scale">
       <button 
         *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
+        [disabled]="!this.keySrv.possibleRandomNoteIndices().includes(i)"
         class="cet-note"
         id="{{ 'note-' + i }}"
         (click)="userGuess(note)"

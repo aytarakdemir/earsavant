@@ -59,6 +59,7 @@ export class KeyService {
   ]);
   public selectedRandomNote: WritableSignal<string> = signal('C');
   public selectedRootNote: WritableSignal<string> = signal('C');
+  public possibleRandomNoteIndices: WritableSignal<number[]> = signal(_.range(this.selectedNoteList().length));
 
   private randomizerWorkingOctave = 3;
 
@@ -94,6 +95,8 @@ export class KeyService {
       octaveRange.high > this.octaves.length - 1
     )
       throw new Error('Invalid octave range!');
+
+    this.possibleRandomNoteIndices.set(possibleNotes);
 
     const selectedKey = this.getKey(rootNote);
     const selectedNote =
