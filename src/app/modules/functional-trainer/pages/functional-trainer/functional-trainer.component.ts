@@ -2,6 +2,7 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
+import { ScoreService } from '../../services/score.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -10,27 +11,34 @@ import * as _ from 'lodash';
 })
 export class FunctionalTrainerComponent {
   trainerStarted: WritableSignal<boolean> = signal(false);
+  coloringActive: WritableSignal<boolean> = signal(false);
 
   guessFeedback: WritableSignal<GuessState> = signal(GuessState.default);
 
+
   GuessState = GuessState;
 
-  colorChangeTime: number = 300;
+  msColorChangeTime: number = 300;
 
-  constructor(public audioSrv: AudioService, public keySrv: KeyService) {}
+  msAfterUserIsAllowedToClick: number = this.msColorChangeTime;
+
+  constructor(public audioSrv: AudioService, public keySrv: KeyService, public scoreSrv: ScoreService) {}
 
   ngOnInit() {}
 
   setNewKey() {
     this.keySrv.randomizeWorkingKey();
     this.guessFeedback.set(GuessState.default);
+    this.scoreSrv.recordScore();
   }
 
   userGuess(note: string) {
+    if (this.coloringActive()) return;
     const guessNote = note.slice(0, -1);
     const correctNote = this.keySrv.selectedRandomNote().slice(0, -1);
 
     if (guessNote === correctNote) {
+      this.scoreSrv.increaseCorrect();
       this.guessFeedback.set(GuessState.success);
       const keyToWalkOn = this.changeOctave(
         Number(note.slice(-1)) -
@@ -44,12 +52,12 @@ export class FunctionalTrainerComponent {
           keyToWalkOn
             .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
             .reverse(),
-          this.colorChangeTime * 0.001,
-          this.colorChangeTime * 0.001
+          this.msColorChangeTime * 0.001,
+          this.msColorChangeTime * 0.001
         );
         this.colorPlaying(
           _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1),
-          this.colorChangeTime
+          this.msColorChangeTime
         );
       } else {
         this.audioSrv.playMelody(
@@ -57,18 +65,19 @@ export class FunctionalTrainerComponent {
             keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
             keyToWalkOn.length
           ),
-          this.colorChangeTime * 0.001,
-          this.colorChangeTime * 0.001
+          this.msColorChangeTime * 0.001,
+          this.msColorChangeTime * 0.001
         );
         this.colorPlaying(
           _.range(
             keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
             keyToWalkOn.length
           ),
-          this.colorChangeTime
+          this.msColorChangeTime
         );
       }
     } else {
+      this.scoreSrv.increaseWrong();
       this.guessFeedback.set(GuessState.failure);
 
       let noteElement = document.getElementById(
@@ -78,24 +87,30 @@ export class FunctionalTrainerComponent {
         noteElement.classList.add('cet-failure');
         setTimeout(() => {
           noteElement?.classList.remove('cet-failure');
-        }, this.colorChangeTime);
+        }, this.msColorChangeTime);
       }
     }
   }
 
   colorPlaying(indices: number[], time: number) {
-    indices.forEach((i, index) => {
-      let note = document.getElementById('note-' + i);
-
-      if (note) {
-        setTimeout(() => {
-          note?.classList.add('cet-playing');
+    if (!this.coloringActive()) {
+      this.coloringActive.set(true);
+      indices.forEach((i, index) => {
+        let note = document.getElementById('note-' + i);
+  
+        if (note) {
           setTimeout(() => {
-            note?.classList.remove('cet-playing');
-          }, time);
-        }, time * index);
-      }
-    });
+            note?.classList.add('cet-playing');
+            setTimeout(() => {
+              note?.classList.remove('cet-playing');
+            }, time);
+          }, time * index);
+        }
+      });
+      setTimeout(() => {
+        this.coloringActive.set(false);
+      }, indices.length * time + this.msAfterUserIsAllowedToClick);
+    }
   }
 
   changeOctave(amount: number) {
@@ -112,6 +127,7 @@ export class FunctionalTrainerComponent {
     this.audioSrv.start();
     this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
+    this.scoreSrv.recordScore();
   }
 }
 
