@@ -5,7 +5,7 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 })
 export class ScoreService {
 
-  public currentScore: WritableSignal<{correct: number, wrong: number}> = signal({correct: 0, wrong: 0});
+  public currentScore: WritableSignal<{correct: number, incorrect: number}> = signal({correct: 0, incorrect: 0});
 
   public scoreRecording: WritableSignal<boolean> = signal(false);
 
@@ -27,10 +27,10 @@ export class ScoreService {
     }
   }
 
-  public increaseWrong() {
+  public increaseIncorrect() {
     if (this.scoreRecording()) {
       this.currentScore.mutate(obj => {
-        obj.wrong = obj.wrong + 1;
+        obj.incorrect = obj.incorrect + 1;
       })
     }
   }

@@ -33,6 +33,33 @@ export class FunctionalTrainerComponent {
     this.keySrv.randomizeWorkingKey();
     this.guessFeedback.set(GuessState.default);
     this.scoreSrv.recordScore();
+
+    this.audioSrv.playProgression(
+      [
+        [
+          this.keySrv.selectedNoteList()[0],
+          this.keySrv.selectedNoteList()[2],
+          this.keySrv.selectedNoteList()[4],
+        ],
+        [
+          this.keySrv.selectedNoteList()[3],
+          this.keySrv.selectedNoteList()[5],
+          this.keySrv.selectedNoteList()[0],
+        ],
+        [
+          this.keySrv.selectedNoteList()[4],
+          this.keySrv.selectedNoteList()[6],
+          this.keySrv.selectedNoteList()[1],
+        ],
+        [
+          this.keySrv.selectedNoteList()[0],
+          this.keySrv.selectedNoteList()[2],
+          this.keySrv.selectedNoteList()[4],
+        ],
+      ]
+    );
+
+    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
   }
 
   userGuess(note: string) {
@@ -81,7 +108,7 @@ export class FunctionalTrainerComponent {
         );
       }
     } else {
-      this.scoreSrv.increaseWrong();
+      this.scoreSrv.increaseIncorrect();
       this.guessFeedback.set(GuessState.failure);
 
       let noteElement = document.getElementById(
@@ -132,6 +159,37 @@ export class FunctionalTrainerComponent {
     this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
     this.scoreSrv.recordScore();
+
+    setTimeout(()=> {
+      this.audioSrv.playProgression(
+        [
+          [
+            this.keySrv.selectedNoteList()[0],
+            this.keySrv.selectedNoteList()[2],
+            this.keySrv.selectedNoteList()[4],
+          ],
+          [
+            this.keySrv.selectedNoteList()[3],
+            this.keySrv.selectedNoteList()[5],
+            this.keySrv.selectedNoteList()[0],
+          ],
+          [
+            this.keySrv.selectedNoteList()[4],
+            this.keySrv.selectedNoteList()[6],
+            this.keySrv.selectedNoteList()[1],
+          ],
+          [
+            this.keySrv.selectedNoteList()[0],
+            this.keySrv.selectedNoteList()[2],
+            this.keySrv.selectedNoteList()[4],
+          ],
+        ]
+      );
+  
+      this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+
+    },500);
+
   }
 }
 

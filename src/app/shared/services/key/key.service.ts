@@ -57,28 +57,6 @@ export class KeyService {
       this.getKeyNotesForOctave(root, this.randomizerWorkingOctave)
     );
     this.setRandomNote(root, { low: 2, high: this.octaves.length - 1 }, possibleNotes);
-    this.audioSrv.playProgression([
-      [
-        this.selectedNoteList()[0],
-        this.selectedNoteList()[2],
-        this.selectedNoteList()[4],
-      ],
-      [
-        this.selectedNoteList()[3],
-        this.selectedNoteList()[5],
-        this.selectedNoteList()[0],
-      ],
-      [
-        this.selectedNoteList()[4],
-        this.selectedNoteList()[6],
-        this.selectedNoteList()[1],
-      ],
-      [
-        this.selectedNoteList()[0],
-        this.selectedNoteList()[2],
-        this.selectedNoteList()[4],
-      ],
-    ]);
   }
 
   public setRandomNote(
