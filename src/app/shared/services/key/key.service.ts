@@ -21,6 +21,22 @@ export class KeyService {
     'A#',
     'B',
   ];
+
+  private solfegeList: string[] = [
+    'Do',
+    'Ra',
+    'Re',
+    'Me',
+    'Mi',
+    'Fa',
+    'Se',
+    'So',
+    'Le',
+    'La',
+    'Te',
+    'Ti',
+  ];
+
   private octaves: string[] = ['0', '1', '2', '3', '4', '5', '6'];
 
   public selectedNoteList: WritableSignal<string[]> = signal([
@@ -50,13 +66,19 @@ export class KeyService {
     this.randomizeWorkingKey();
   }
 
-  public randomizeWorkingKey(possibleNotes: number[] = _.range(this.selectedNoteList().length)): void {
+  public randomizeWorkingKey(
+    possibleNotes: number[] = _.range(this.selectedNoteList().length)
+  ): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedRootNote.set(root);
     this.selectedNoteList.set(
       this.getKeyNotesForOctave(root, this.randomizerWorkingOctave)
     );
-    this.setRandomNote(root, { low: 2, high: this.octaves.length - 1 }, possibleNotes);
+    this.setRandomNote(
+      root,
+      { low: 2, high: this.octaves.length - 1 },
+      possibleNotes
+    );
   }
 
   public setRandomNote(
@@ -75,7 +97,11 @@ export class KeyService {
 
     const selectedKey = this.getKey(rootNote);
     const selectedNote =
-      selectedKey[possibleNotes[Math.floor(Math.random() * selectedKey.length) % possibleNotes.length]];
+      selectedKey[
+        possibleNotes[
+          Math.floor(Math.random() * selectedKey.length) % possibleNotes.length
+        ]
+      ];
     this.selectedRandomNote.set(
       selectedNote +
         this.octaves[
@@ -124,11 +150,17 @@ export class KeyService {
   ): string[] {
     this.notes.indexOf(rootNote);
     var keyNotes: string[] = [];
+    var solfegeArr: string[] = [];
 
     steps.forEach((step) => {
       keyNotes.push(
         this.notes[(this.notes.indexOf(rootNote) + step) % this.notes.length]
       );
+
+      solfegeArr.push(
+        this.solfegeList[step]
+      );
+      this.selectedSolfegeList.set(solfegeArr)
     });
     return keyNotes;
   }
