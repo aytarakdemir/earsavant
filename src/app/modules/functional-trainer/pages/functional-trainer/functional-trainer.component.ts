@@ -17,9 +17,9 @@ export class FunctionalTrainerComponent {
 
   GuessState = GuessState;
 
-  msColorChangeTime: number = 500;
+  msMelodySpeed: number = 400;
 
-  msAfterUserIsAllowedToClick: number = this.msColorChangeTime;
+  msAfterUserIsAllowedToClick: number = this.msMelodySpeed;
 
   constructor(
     public audioSrv: AudioService,
@@ -83,12 +83,12 @@ export class FunctionalTrainerComponent {
           keyToWalkOn
             .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
             .reverse(),
-          this.msColorChangeTime * 0.001,
-          this.msColorChangeTime * 0.001
+          this.msMelodySpeed * 0.001,
+          this.msMelodySpeed * 0.001
         );
         this.colorPlaying(
           _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1),
-          this.msColorChangeTime
+          this.msMelodySpeed
         );
       } else {
         this.audioSrv.playMelody(
@@ -96,15 +96,15 @@ export class FunctionalTrainerComponent {
             keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
             keyToWalkOn.length
           ),
-          this.msColorChangeTime * 0.001,
-          this.msColorChangeTime * 0.001
+          this.msMelodySpeed * 0.001,
+          this.msMelodySpeed * 0.001
         );
         this.colorPlaying(
           _.range(
             keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
             keyToWalkOn.length
           ),
-          this.msColorChangeTime
+          this.msMelodySpeed
         );
       }
     } else {
@@ -118,7 +118,7 @@ export class FunctionalTrainerComponent {
         noteElement.classList.add('cet-failure');
         setTimeout(() => {
           noteElement?.classList.remove('cet-failure');
-        }, this.msColorChangeTime);
+        }, this.msMelodySpeed);
       }
     }
   }

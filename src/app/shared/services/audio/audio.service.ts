@@ -54,7 +54,7 @@ export class AudioService {
       Tone.loaded().then(() => {
         const now = Tone.now();
         this.sampler.triggerAttack(note, now + lag);
-        this.sampler.releaseAll(now + lag + sustainTime);
+        this.sampler.triggerRelease(note, now + lag + sustainTime);
       
       })
     }
