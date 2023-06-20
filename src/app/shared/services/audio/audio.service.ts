@@ -9,10 +9,23 @@ export class AudioService {
 
   private chordProgressionActive: WritableSignal<boolean> = signal(false);
   private melodyActive: WritableSignal<boolean> = signal(false);
+  private sampler!: Tone.Sampler;
 
   public start() {
     Tone.start();
     Tone.Destination.volume.value = -10
+
+
+    this.sampler = new Tone.Sampler({
+      urls: {
+        "C4": "C4.mp3",
+        "D#4": "Ds4.mp3",
+        "F#4": "Fs4.mp3",
+        "A4": "A4.mp3",
+      },
+      release: 1,
+      baseUrl: "https://tonejs.github.io/audio/salamander/",
+    }).toDestination();
   }
 
   private setProgressionActive() {
@@ -37,14 +50,13 @@ export class AudioService {
     sustainTime: number = 0.3
   ): void {
     if (Tone.context.state !== 'suspended') {
-      const synth = new Tone.Synth().toDestination();
-      const now = Tone.now();
-      synth.triggerAttack(note, now + lag);
-      synth.triggerRelease(now + lag + sustainTime);
-
-      setTimeout(() => {
-        synth.dispose();
-      }, (lag + sustainTime) * 5000);
+      
+      Tone.loaded().then(() => {
+        const now = Tone.now();
+        this.sampler.triggerAttack(note, now + lag);
+        this.sampler.releaseAll(now + lag + sustainTime);
+      
+      })
     }
   }
 
@@ -89,4 +101,7 @@ export class AudioService {
       }, (chords.length - 1) * spaceTime + sustainTime * 5000);
     }
   }
+
+
+
 }

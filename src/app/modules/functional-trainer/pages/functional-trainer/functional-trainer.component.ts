@@ -17,7 +17,7 @@ export class FunctionalTrainerComponent {
 
   GuessState = GuessState;
 
-  msColorChangeTime: number = 300;
+  msColorChangeTime: number = 500;
 
   msAfterUserIsAllowedToClick: number = this.msColorChangeTime;
 
