@@ -60,7 +60,7 @@ export class AudioService {
       });
       setTimeout(() => {
         this.setMelodyPassive();
-      }, (notes.length - 1) * spaceTime + sustainTime * 5000);
+      }, (notes.length - 1) * spaceTime);
     }
   }
 
