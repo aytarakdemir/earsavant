@@ -1,0 +1,14 @@
+<div class="container">
+  <div
+    class="box"
+    *ngFor="let question of this.sessionSrv.questions()"
+    [class.correct]="question.isCorrect"
+    [class.incorrect]="!question.isCorrect"
+    [class.default]="question.isCorrect === undefined"
+  ></div>
+
+  <div
+    class="box default"
+    *ngFor="let &quot;empty-box&quot; of remainingBoxes()"
+  ></div>
+</div>

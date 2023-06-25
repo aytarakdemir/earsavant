@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.box {
+  width: 30px;
+  height: 15px;
+  background-color: white;
+    border-radius: 5px;
+}
+
+.box.correct {
+  background-color: green;
+}
+
+.box.incorrect {
+  background-color: red;
+}
+
+.box.default {
+  background-color: white;
+}

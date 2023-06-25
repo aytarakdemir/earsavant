@@ -4,6 +4,7 @@ import {
   Signal,
   signal,
   computed,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 
@@ -11,11 +12,11 @@ import { KeyService } from 'src/app/shared/services/key/key.service';
   providedIn: 'root',
 })
 export class SessionService {
-  public questions: {
+  public questions: WritableSignal<{
     correctNoteIndex?: number;
     wrongNoteIndexList?: number[];
     isCorrect?: boolean;
-  }[] = [];
+  }[]> = signal([]);
 
   public state: WritableSignal<SessionState> = signal(SessionState.FirstInit);
 
@@ -52,6 +53,11 @@ export class SessionService {
 
   public resetSession() {
     this.state.set(SessionState.FirstInit);
+
+    this.activeQuestionState = {};
+    this.canProceedToTheNextQuestion = false;
+    this.activeQuestion = 0;
+    this.questions.set([]);
   }
 
   public goToNextQuestion() {
@@ -60,14 +66,14 @@ export class SessionService {
     } else {
       this.activeQuestionState.isCorrect = true;
     }
-    this.questions.push(this.activeQuestionState);
+    this.questions.mutate(array => array.push(this.activeQuestionState));
 
     if (this.questionCount - 1 > this.activeQuestion) {
       console.log(
         'Active Question: ',
         this.activeQuestion,
         '\nQuestions Array: ',
-        this.questions
+        this.questions()
       );
       this.activeQuestionState = {};
       this.activeQuestion = this.activeQuestion + 1;
@@ -77,7 +83,7 @@ export class SessionService {
         'Active Question: ',
         this.activeQuestion,
         '\nQuestions Array: ',
-        this.questions
+        this.questions()
       );
       this.endSession();
     }
@@ -89,7 +95,7 @@ export class SessionService {
     this.state.set(SessionState.AfterSession);
 
     let correctCount = 0;
-    this.questions.forEach((question) => {
+    this.questions().forEach((question) => {
       if (question.isCorrect) correctCount++;
     });
 
@@ -99,11 +105,7 @@ export class SessionService {
       questionCount: this.questionCount,
     };
 
-    // ...before the session info gets deleted here in order to get ready for a new game
-    this.activeQuestionState = {};
-    this.canProceedToTheNextQuestion = false;
-    this.activeQuestion = 0;
-    this.questions = [];
+
   }
 
   public guess(correctNote: string, guessNote: string) {

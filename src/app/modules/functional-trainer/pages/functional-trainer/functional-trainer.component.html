@@ -7,6 +7,7 @@
 
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.Active">
+    <app-progress-info></app-progress-info>
     <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
 
     <div class="cet-scale">
@@ -72,6 +73,7 @@
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.AfterSession">
     <p>Fin</p>
+    <app-progress-info></app-progress-info>
     <p> {{this.sessionSrv.results.correctCount}} / {{this.sessionSrv.results.questionCount}}</p>
     <button (click)="this.sessionSrv.resetSession()">Restart</button>
     <button routerLink="/home" (click)="this.sessionSrv.resetSession()">To Main Menu</button>
