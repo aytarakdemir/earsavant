@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to DigitalOcean Droplet
-        uses: appleboy/ssh-action@master
+        uses: aytarakdemir/comms-ear-training@master
         with:
           host: ${{secrets.HOST}}
           username: ${{secrets.USERNAME}}
