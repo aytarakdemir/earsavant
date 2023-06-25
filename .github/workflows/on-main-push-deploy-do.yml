@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to DigitalOcean Droplet
-        uses: aytarakdemir/comms-ear-training@master
+        uses: aytarakdemir/comms-ear-training@main
         with:
           host: ${{secrets.HOST}}
           username: ${{secrets.USERNAME}}
