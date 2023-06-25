@@ -21,4 +21,5 @@ jobs:
             mkdir test
             cd test
             git clone git@github.com:aytarakdemir/comms-ear-training.git
+            actions/checkout Default: ${{ github.repository }}
             echo 'Deployment to digital ocean finished'
