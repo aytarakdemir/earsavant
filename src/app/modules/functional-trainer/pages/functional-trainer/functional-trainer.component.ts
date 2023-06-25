@@ -3,6 +3,7 @@ import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
 import { ScoreService } from '../../services/score.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -24,7 +25,8 @@ export class FunctionalTrainerComponent {
   constructor(
     public audioSrv: AudioService,
     public keySrv: KeyService,
-    public scoreSrv: ScoreService
+    public scoreSrv: ScoreService,
+    public sessionSrv: SessionService
   ) {}
 
   ngOnInit() {}
@@ -66,8 +68,10 @@ export class FunctionalTrainerComponent {
     if (this.coloringActive()) return;
     const guessNote = note.slice(0, -1);
     const correctNote = this.keySrv.selectedRandomNote().slice(0, -1);
-
+    
+    this.sessionSrv.guess(correctNote, guessNote);
     if (guessNote === correctNote) {
+
       this.scoreSrv.increaseCorrect();
       this.scoreSrv.stopRecordScore();
       this.guessFeedback.set(GuessState.success);
@@ -159,6 +163,7 @@ export class FunctionalTrainerComponent {
     this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
     this.scoreSrv.recordScore();
+    this.sessionSrv.startSession();
 
     setTimeout(()=> {
       this.audioSrv.playProgression(
