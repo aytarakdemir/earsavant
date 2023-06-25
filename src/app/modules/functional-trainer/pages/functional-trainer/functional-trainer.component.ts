@@ -2,8 +2,7 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
-import { ScoreService } from '../../services/score.service';
-import { SessionService } from '../../services/session.service';
+import { SessionService, SessionState } from '../../services/session.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -22,11 +21,13 @@ export class FunctionalTrainerComponent {
 
   msAfterUserIsAllowedToClick: number = this.msMelodySpeed;
 
+  SessionState = SessionState;
+
+
   constructor(
     public audioSrv: AudioService,
     public keySrv: KeyService,
-    public scoreSrv: ScoreService,
-    public sessionSrv: SessionService
+    public sessionSrv: SessionService,
   ) {}
 
   ngOnInit() {}
@@ -34,34 +35,37 @@ export class FunctionalTrainerComponent {
   setNewKey() {
     this.keySrv.randomizeWorkingKey();
     this.guessFeedback.set(GuessState.default);
-    this.scoreSrv.recordScore();
+    this.sessionSrv.goToNextQuestion();
 
-    this.audioSrv.playProgression(
-      [
+    if (this.sessionSrv.state() === SessionState.Active) {
+      this.audioSrv.playProgression(
         [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-        [
-          this.keySrv.selectedNoteList()[3],
-          this.keySrv.selectedNoteList()[5],
-          this.keySrv.selectedNoteList()[0],
-        ],
-        [
-          this.keySrv.selectedNoteList()[4],
-          this.keySrv.selectedNoteList()[6],
-          this.keySrv.selectedNoteList()[1],
-        ],
-        [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-      ]
-    );
+          [
+            this.keySrv.selectedNoteList()[0],
+            this.keySrv.selectedNoteList()[2],
+            this.keySrv.selectedNoteList()[4],
+          ],
+          [
+            this.keySrv.selectedNoteList()[3],
+            this.keySrv.selectedNoteList()[5],
+            this.keySrv.selectedNoteList()[0],
+          ],
+          [
+            this.keySrv.selectedNoteList()[4],
+            this.keySrv.selectedNoteList()[6],
+            this.keySrv.selectedNoteList()[1],
+          ],
+          [
+            this.keySrv.selectedNoteList()[0],
+            this.keySrv.selectedNoteList()[2],
+            this.keySrv.selectedNoteList()[4],
+          ],
+        ]
+      );
+  
+      this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
 
-    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+    }
   }
 
   userGuess(note: string) {
@@ -71,9 +75,6 @@ export class FunctionalTrainerComponent {
     
     this.sessionSrv.guess(correctNote, guessNote);
     if (guessNote === correctNote) {
-
-      this.scoreSrv.increaseCorrect();
-      this.scoreSrv.stopRecordScore();
       this.guessFeedback.set(GuessState.success);
       const keyToWalkOn = this.changeOctave(
         Number(note.slice(-1)) -
@@ -112,7 +113,6 @@ export class FunctionalTrainerComponent {
         );
       }
     } else {
-      this.scoreSrv.increaseIncorrect();
       this.guessFeedback.set(GuessState.failure);
 
       let noteElement = document.getElementById(
@@ -162,8 +162,7 @@ export class FunctionalTrainerComponent {
     this.audioSrv.start();
     this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
-    this.scoreSrv.recordScore();
-    this.sessionSrv.startSession();
+    this.sessionSrv.startSession(5);
 
     setTimeout(()=> {
       this.audioSrv.playProgression(

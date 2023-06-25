@@ -1,9 +1,12 @@
 <div class="cet-functional-wrapper">
   <h2>Functional Trainer</h2>
 
-  <button (click)="initialize()" *ngIf="!trainerStarted()">Start</button>
+  <ng-container>
+    <button (click)="initialize()" *ngIf="this.sessionSrv.state() === SessionState.FirstInit">Start</button>
+  </ng-container>
 
-  <ng-container *ngIf="trainerStarted()">
+
+  <ng-container *ngIf="this.sessionSrv.state() === SessionState.Active">
     <div class="cet-scale">
       <button 
         *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
@@ -55,13 +58,17 @@
       >
         Play Progression
       </button>
-      <button [disabled]="this.scoreSrv.scoreRecording()" (click)="setNewKey()">New Key</button>
+      <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion" (click)="setNewKey()">Next</button>
     </div>
 
-    <div class="cet-score">
+    <!-- <div class="cet-score">
       <p>Correct: {{this.scoreSrv.currentScore().correct}}</p>
       <p>Wrong: {{this.scoreSrv.currentScore().incorrect}}</p>
 
-    </div>
+    </div> -->
+  </ng-container>
+
+  <ng-container *ngIf="this.sessionSrv.state() === SessionState.AfterSession">
+    <p>Fin</p>
   </ng-container>
 </div>

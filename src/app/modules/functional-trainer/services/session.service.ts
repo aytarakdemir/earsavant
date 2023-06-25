@@ -7,7 +7,7 @@ import { KeyService } from 'src/app/shared/services/key/key.service';
 export class SessionService {
 
   
-  public questions: {correctNoteIndex?: number, wrongNoteIndexList?: number[]}[] = [];
+  public questions: {correctNoteIndex?: number, wrongNoteIndexList?: number[], isCorrect?: boolean}[] = [];
   
   public state: WritableSignal<SessionState> = signal(SessionState.FirstInit);
 
@@ -19,7 +19,9 @@ export class SessionService {
 
   private selectedKey: Signal<string[]> = computed(()=>this.keySrv.selectedNoteList().map(note => {return note.slice(0, -1)} ))
 
-  public activeQuestionState: {correctNoteIndex?: number, wrongNoteIndexList?: number[]} = {};
+  public activeQuestionState: {correctNoteIndex?: number, wrongNoteIndexList?: number[], isCorrect?: boolean} = {};
+
+  public canProceedToTheNextQuestion: boolean = false;
 
   constructor(private keySrv: KeyService) { }
 
@@ -32,9 +34,17 @@ export class SessionService {
   }
 
   public goToNextQuestion() {
-    if (this.questionCount > this.activeQuestion) {
-      this.questions.push(this.activeQuestionState);
+    if (this.activeQuestionState.wrongNoteIndexList) {
+      this.activeQuestionState.isCorrect = false;
+    } else {
+      this.activeQuestionState.isCorrect = true;
+    }
+    this.questions.push(this.activeQuestionState);
+
+    if (this.questionCount - 1> this.activeQuestion) {
+      this.activeQuestionState = {};
       this.activeQuestion = this.activeQuestion + 1;
+      this.canProceedToTheNextQuestion = false;
       console.log("Active Question: ", this.activeQuestion, "\nQuestions Array: ", this.questions);
     } else {
       this.endSession();
@@ -46,6 +56,11 @@ export class SessionService {
   public endSession() {
     if(this.state() !== SessionState.Active) throw new Error("No active session to end");
     this.state.set(SessionState.AfterSession);
+
+    // Get the state ready for the next session
+    this.activeQuestionState = {};
+    this.canProceedToTheNextQuestion = false;
+    this.activeQuestion = 0;
   }
 
   public guess(correctNote: string, guessNote:string) {
@@ -57,6 +72,11 @@ export class SessionService {
       this.activeQuestionState.correctNoteIndex = correctIndex;
     }
 
+    if (guessIndex === correctIndex) this.canProceedToTheNextQuestion = true;
+
+    if (this.canProceedToTheNextQuestion) return;
+
+
     if (this.activeQuestionState.wrongNoteIndexList) {
       if(!this.activeQuestionState.wrongNoteIndexList.includes(guessIndex)) {
         this.activeQuestionState.wrongNoteIndexList.push(guessIndex)
@@ -64,13 +84,6 @@ export class SessionService {
     } else {
       this.activeQuestionState.wrongNoteIndexList = [guessIndex];
     }
-
-
-    console.log(correctIndex, guessIndex);
-    
-    // You have the selected key, calculate which notes correspond to which noteIndices. Do all score calculations according to those indices. Note name are variable but indices are constant. Indices act as scale degrees
-    console.log(this.selectedKey());
-    console.log(correctNote, guessNote);
   }
 
 
@@ -79,7 +92,7 @@ export class SessionService {
 }
 
 
-enum SessionState {
+export enum SessionState {
   FirstInit = "firstInit",
   Active = "active",
   AfterSession = "afterSession"
