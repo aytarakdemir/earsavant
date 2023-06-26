@@ -27,11 +27,12 @@ jobs:
           name: dist
           path: dist
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Install unzip
-        run: sudo apt-get update && sudo apt-get install -y unzip
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: temp
 
 
       - name: Deploy to DigitalOcean Droplet
@@ -41,23 +42,13 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
+
             # On your server
-            # Create a temporary directory for downloading artifacts
-            mkdir temp
-
-            # Download the artifacts from the workflow run
-            curl -sSL -o temp/artifacts.zip \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" \
-              $(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" | jq -r '.artifacts[0].archive_download_url')
-
-            # Unzip the artifacts
-            unzip -q artifacts.zip -d temp
-
             # Move the build files to the desired location
-            mv temp /home/deployer/test/build
+            mv temp/dist /home/deployer/test/build
 
             # Clean up
-            rm -rf artifacts.zip temp
+            rm -rf temp
 
             echo 'Deployment to DigitalOcean finished'
+
