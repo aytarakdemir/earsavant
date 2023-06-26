@@ -1,0 +1,55 @@
+name: Deploy to DigitalOcean Droplet
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Deploy to DigitalOcean Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            # On your server
+            # Create a temporary directory for downloading artifacts
+            mkdir temp
+
+            # Download the artifacts from the workflow run
+            curl -sSL -o artifacts.zip \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/artifacts/$(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" | jq -r '.artifacts[0].id')/zip"
+
+            # Unzip the artifacts
+            unzip -q artifacts.zip -d temp
+
+            # Move the build files to the desired location
+            mv /home/deployer/test/build
+
+            # Clean up
+            rm -rf artifacts.zip temp
+
+            echo 'Deployment to DigitalOcean finished'
