@@ -46,9 +46,10 @@ jobs:
             mkdir temp
 
             # Download the artifacts from the workflow run
-            curl -sSL -o artifacts.zip 
+            curl -sSL -o temp/artifacts.zip \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/artifacts/$(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" | jq -r '.artifacts[0].id')/zip"
+              "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" \
+              $(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/aytarakdemir/comms-ear-training/actions/runs/${{ github.run_id }}/artifacts" | jq -r '.artifacts[0].archive_download_url')
 
             # Unzip the artifacts
             unzip -q artifacts.zip -d temp
