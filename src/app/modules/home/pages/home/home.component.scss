@@ -11,7 +11,10 @@
 
     .cet-title {
         position: absolute;
-        top: 100px;
+        top: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .cet-content {
@@ -20,14 +23,18 @@
         align-items: center;
         justify-content: center;
         max-height: 500px;
+        position: relative;
         gap:30px;
+
+
 
         .cet-menu {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 380px;
-            overflow-y: scroll;
+            max-height: 330px;
+            overflow-y: auto;
+            overflow-x: hidden;
             padding-inline: 20px;
     
             .cet-button {

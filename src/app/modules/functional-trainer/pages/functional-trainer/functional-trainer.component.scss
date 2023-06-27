@@ -40,7 +40,23 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: calc(100vh - 16px);
   gap: 30px;
+  position: relative;
+
+  h2 {
+    position: absolute;
+    top: 120px;
+  }
+
+  .cet-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
 }
 
 .cet-scale {
