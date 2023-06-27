@@ -7,8 +7,8 @@ import * as Tone from 'tone';
 export class AudioService {
   constructor() {}
 
-  private chordProgressionActive: WritableSignal<boolean> = signal(false);
-  private melodyActive: WritableSignal<boolean> = signal(false);
+  public chordProgressionActive: WritableSignal<boolean> = signal(false);
+  public melodyActive: WritableSignal<boolean> = signal(false);
   private sampler!: Tone.Sampler;
 
   public start() {
@@ -65,15 +65,15 @@ export class AudioService {
     spaceTime: number = 0.3,
     sustainTime: number = 0.3
   ) {
-    if (!this.melodyActive()) {
-      this.setMelodyActive();
-      notes.forEach((note, index) => {
-        this.playNote(note, index * spaceTime, sustainTime);
-      });
-      setTimeout(() => {
-        this.setMelodyPassive();
-      }, (notes.length - 1) * spaceTime);
-    }
+    if (this.melodyActive()) return;
+    
+    this.setMelodyActive();
+    notes.forEach((note, index) => {
+      this.playNote(note, index * spaceTime, sustainTime);
+    });
+    setTimeout(() => {
+      this.setMelodyPassive();
+    }, (notes.length - 1) * (spaceTime * 1000) + (sustainTime * 1000));
   }
 
   public playChord(
@@ -91,15 +91,14 @@ export class AudioService {
     spaceTime: number = 0.3,
     sustainTime: number = 0.3
   ) {
-    if (!this.chordProgressionActive()) {
-      this.setProgressionActive();
-      chords.forEach((chord, index) => {
-        this.playChord(chord, index * spaceTime, sustainTime);
-      }, (chords.length - 1) * spaceTime + sustainTime);
-      setTimeout(() => {
-        this.setProgressionPassive();
-      }, (chords.length - 1) * spaceTime + sustainTime * 5000);
-    }
+    if (this.chordProgressionActive()) return;
+    this.setProgressionActive();
+    chords.forEach((chord, index) => {
+      this.playChord(chord, index * spaceTime, sustainTime);
+    }, (chords.length - 1) * spaceTime + sustainTime);
+    setTimeout(() => {
+      this.setProgressionPassive();
+    }, (chords.length - 1) * (spaceTime * 1000) + (sustainTime * 1000));
   }
 
 

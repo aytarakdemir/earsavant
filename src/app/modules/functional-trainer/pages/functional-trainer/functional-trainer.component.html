@@ -61,7 +61,7 @@
       >
         Play Progression
       </button>
-      <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion" (click)="setNewKey()">Next</button>
+      <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
     </div>
 
     <!-- <div class="cet-score">
