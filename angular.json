@@ -33,7 +33,11 @@
               "src/styles.scss",
               "src/styles/fonts.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "automation-events"
+            ]
           },
           "configurations": {
             "production": {

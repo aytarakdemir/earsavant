@@ -80,38 +80,19 @@ export class FunctionalTrainerComponent {
         Number(note.slice(-1)) -
           Number(this.keySrv.selectedRandomNote().slice(-1))
       );
-      if (
-        keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
-        keyToWalkOn.length / 2
-      ) {
-        this.audioSrv.playMelody(
-          keyToWalkOn
-            .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
-            .reverse(),
-          this.msMelodySpeed * 0.001,
-          this.msMelodySpeed * 0.001
-        );
-        this.colorPlaying(
-          _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1),
-          this.msMelodySpeed
-        );
-      } else {
-        this.audioSrv.playMelody(
-          keyToWalkOn.slice(
-            keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
-            keyToWalkOn.length
-          ),
-          this.msMelodySpeed * 0.001,
-          this.msMelodySpeed * 0.001
-        );
-        this.colorPlaying(
-          _.range(
-            keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
-            keyToWalkOn.length
-          ),
-          this.msMelodySpeed
-        );
-      }
+      
+      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn);
+      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn);
+
+      this.audioSrv.playMelody(
+        notesToWalkOn,
+        this.msMelodySpeed * 0.001,
+        this.msMelodySpeed * 0.001
+      );
+      this.colorPlaying(
+        noteIndicesToWalkOn,
+        this.msMelodySpeed
+      );
     } else {
       this.guessFeedback.set(GuessState.failure);
 
@@ -127,25 +108,53 @@ export class FunctionalTrainerComponent {
     }
   }
 
-  colorPlaying(indices: number[], time: number) {
-    if (!this.coloringActive()) {
-      this.coloringActive.set(true);
-      indices.forEach((i, index) => {
-        let note = document.getElementById('note-' + i);
-
-        if (note) {
-          setTimeout(() => {
-            note?.classList.add('cet-playing');
-            setTimeout(() => {
-              note?.classList.remove('cet-playing');
-            }, time);
-          }, time * index);
-        }
-      });
-      setTimeout(() => {
-        this.coloringActive.set(false);
-      }, indices.length * time + this.msAfterUserIsAllowedToClick);
+  getNotesToWalkOn(keyToWalkOn: string[]) {
+    if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
+    keyToWalkOn.length / 2) {
+      return keyToWalkOn
+            .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
+            .reverse();
+    } else {
+      return keyToWalkOn.slice(
+        keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
+        keyToWalkOn.length
+      );
     }
+  }
+  
+  getNotesIndicesToWalkOn(keyToWalkOn: string[]) {
+    if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
+    keyToWalkOn.length / 2) {
+      return _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1);
+    } else {
+      return _.range(
+        keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
+        keyToWalkOn.length
+      );
+    }
+    
+  }
+
+  colorPlaying(indices: number[], time: number) {
+    if (this.coloringActive()) return;
+    
+    this.coloringActive.set(true);
+    indices.forEach((i, index) => {
+      let note = document.getElementById('note-' + i);
+
+      if (note) {
+        setTimeout(() => {
+          note?.classList.add('cet-playing');
+          setTimeout(() => {
+            note?.classList.remove('cet-playing');
+          }, time);
+        }, time * index);
+      }
+    });
+    setTimeout(() => {
+      this.coloringActive.set(false);
+    }, indices.length * time + this.msAfterUserIsAllowedToClick);
+    
   }
 
   changeOctave(amount: number) {
