@@ -80,9 +80,9 @@ export class FunctionalTrainerComponent {
         Number(note.slice(-1)) -
           Number(this.keySrv.selectedRandomNote().slice(-1))
       );
-      
-      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn);
-      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn);
+
+      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn, WalkMode.ToRoot);
+      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn, WalkMode.ToRoot);
 
       this.audioSrv.playMelody(
         notesToWalkOn,
@@ -108,31 +108,59 @@ export class FunctionalTrainerComponent {
     }
   }
 
-  getNotesToWalkOn(keyToWalkOn: string[]) {
+  getNotesToWalkOn(keyToWalkOn: string[], walkMode: WalkMode) {
+    let resultNotes;
+
     if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
     keyToWalkOn.length / 2) {
-      return keyToWalkOn
+      resultNotes = keyToWalkOn
             .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
             .reverse();
     } else {
-      return keyToWalkOn.slice(
+      resultNotes = keyToWalkOn.slice(
         keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
         keyToWalkOn.length
       );
     }
+
+    return this.transformResultForSelectedWalkMode(resultNotes, walkMode);
   }
   
-  getNotesIndicesToWalkOn(keyToWalkOn: string[]) {
+  getNotesIndicesToWalkOn(keyToWalkOn: string[], walkMode: WalkMode) {
+    let resultNotes;
+
     if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
     keyToWalkOn.length / 2) {
-      return _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1);
+      resultNotes = _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1);
     } else {
-      return _.range(
+      resultNotes = _.range(
         keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
         keyToWalkOn.length
       );
     }
+
+    return this.transformResultForSelectedWalkMode(resultNotes, walkMode);
     
+  }
+  
+  transformResultForSelectedWalkMode(resultNotes: any[], walkMode: WalkMode) {
+    switch (walkMode) {
+      case WalkMode.ToRoot:
+        return resultNotes;
+      case WalkMode.FromRoot:
+        return resultNotes.reverse();
+      case WalkMode.JumpToRoot:
+        let ret = [];
+        ret.push(resultNotes[0]);
+        if (resultNotes[0] !== resultNotes[resultNotes.length-1]) {
+          ret.push(resultNotes[resultNotes.length-1]);
+        }
+        return ret;
+      case WalkMode.NoWalk:
+        return [resultNotes[0]];
+      default:
+        return resultNotes;
+    }
   }
 
   colorPlaying(indices: number[], time: number) {
@@ -210,4 +238,11 @@ enum GuessState {
   default = 'def',
   success = 'success',
   failure = 'fail',
+}
+
+enum WalkMode {
+  ToRoot = 'toRoot',
+  FromRoot = 'fromRoot',
+  JumpToRoot = 'jumpToRoot',
+  NoWalk = 'noWalk',
 }
