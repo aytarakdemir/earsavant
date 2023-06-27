@@ -1,14 +1,21 @@
-<div class="container">
-  <div
-    class="box"
-    *ngFor="let question of this.sessionSrv.questions()"
-    [class.correct]="question.isCorrect"
-    [class.incorrect]="!question.isCorrect"
-    [class.default]="question.isCorrect === undefined"
-  ></div>
+<div class="cet-progress-info">
+  <div class="container">
+    <div
+      class="box"
+      *ngFor="let question of this.sessionSrv.questions()"
+      [class.correct]="question.isCorrect"
+      [class.incorrect]="!question.isCorrect"
+      [class.default]="question.isCorrect === undefined"
+    ></div>
+  
+    <div
+      class="box default"
+      *ngFor="let &quot;empty-box&quot; of remainingBoxes()"
+    ></div>
+  </div>
+  <div class="cet-current-info">
+    <p class="cet-incorrect-text" *ngIf="this.sessionSrv.activeQuestionState.wrongNoteIndexList">Incorrect</p>
+    <p class="cet-correct-text" *ngIf="this.sessionSrv.correctGuess">Correct</p>
+  </div>
 
-  <div
-    class="box default"
-    *ngFor="let &quot;empty-box&quot; of remainingBoxes()"
-  ></div>
 </div>

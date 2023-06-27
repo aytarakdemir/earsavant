@@ -1,3 +1,10 @@
+
+.cet-progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
 .container {
   display: flex;
   flex-direction: row;
@@ -21,4 +28,24 @@
 
 .box.default {
   background-color: white;
+}
+
+.cet-current-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+
+  p {
+    height: 30px;
+  }
+
+  .cet-incorrect-text {
+    color: red;
+  }
+  
+  .cet-correct-text {
+    color: green;
+  }
 }

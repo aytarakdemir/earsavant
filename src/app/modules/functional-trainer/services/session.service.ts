@@ -42,6 +42,8 @@ export class SessionService {
 
   public results: { correctCount?: number; questionCount?: number } = {};
 
+  public correctGuess: boolean = false;
+
   constructor(private keySrv: KeyService) {}
 
   public startSession(questionCount: number = 20) {
@@ -78,6 +80,7 @@ export class SessionService {
       this.activeQuestionState = {};
       this.activeQuestion = this.activeQuestion + 1;
       this.canProceedToTheNextQuestion = false;
+      this.correctGuess = false;
     } else {
       console.log(
         'Active Question: ',
@@ -116,8 +119,12 @@ export class SessionService {
       this.activeQuestionState.correctNoteIndex = correctIndex;
     }
 
-    if (guessIndex === correctIndex) this.canProceedToTheNextQuestion = true;
-
+    if (guessIndex === correctIndex) {
+      if (!this.activeQuestionState.wrongNoteIndexList) {
+        this.correctGuess = true;
+      }
+      this.canProceedToTheNextQuestion = true;
+    }
     if (this.canProceedToTheNextQuestion) return;
 
     if (this.activeQuestionState.wrongNoteIndexList) {
