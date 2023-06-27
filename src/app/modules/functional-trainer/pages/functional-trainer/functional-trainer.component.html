@@ -63,6 +63,7 @@
       </button>
       <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
     </div>
+    <button routerLink="/home" (click)="this.sessionSrv.endSession()">End Session</button>
 
     <!-- <div class="cet-score">
       <p>Correct: {{this.scoreSrv.currentScore().correct}}</p>

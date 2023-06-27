@@ -30,7 +30,9 @@ export class FunctionalTrainerComponent {
     public sessionSrv: SessionService,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.sessionSrv.resetSession();
+  }
 
   setNewKey() {
     this.keySrv.randomizeWorkingKey();
