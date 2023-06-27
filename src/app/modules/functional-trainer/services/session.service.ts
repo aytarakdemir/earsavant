@@ -98,6 +98,7 @@ export class SessionService {
     this.state.set(SessionState.AfterSession);
 
     let correctCount = 0;
+    this.correctGuess = false;
     this.questions().forEach((question) => {
       if (question.isCorrect) correctCount++;
     });
