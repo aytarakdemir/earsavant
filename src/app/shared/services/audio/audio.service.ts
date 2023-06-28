@@ -14,7 +14,7 @@ export class AudioService {
   private instrument!: Tone.PolySynth;
   public start() {
     Tone.start();
-    Tone.Destination.volume.value = -15;
+    Tone.Destination.volume.value = -5;
 
     
     this.instrument = new Tone.PolySynth().toDestination()
@@ -56,9 +56,8 @@ export class AudioService {
     if (Tone.context.state !== 'suspended') {      
       Tone.loaded().then(() => {
         const now = Tone.context.currentTime;
-        this.instrument.triggerAttack(note, now + lag);
-        this.instrument.triggerRelease(note, now + lag + sustainTime);
-      
+        this.sampler.triggerAttack(note, now + lag);
+        this.sampler.triggerRelease(note, now + lag + sustainTime);
       })
     }
   }
