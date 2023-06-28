@@ -11,9 +11,11 @@ export class AudioService {
   public melodyActive: WritableSignal<boolean> = signal(false);
   private sampler!: Tone.Sampler;
 
+  private instrument!: Tone.PolySynth;
   public start() {
     Tone.start();
-    Tone.Destination.volume.value = -10
+    
+    this.instrument = new Tone.PolySynth().toDestination()
 
 
     this.sampler = new Tone.Sampler({
@@ -52,9 +54,9 @@ export class AudioService {
     if (Tone.context.state !== 'suspended') {
       
       Tone.loaded().then(() => {
-        const now = Tone.now();
-        this.sampler.triggerAttack(note, now + lag);
-        this.sampler.triggerRelease(note, now + lag + sustainTime);
+        const now = Tone.context.currentTime;
+        this.instrument.triggerAttack(note, now + lag);
+        this.instrument.triggerRelease(note, now + lag + sustainTime);
       
       })
     }
