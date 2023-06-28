@@ -10,7 +10,7 @@
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.Active">
 
     <ng-container *ngIf="!this.audioSrv.samplerReady()">
-      <p>Loading...</p>
+      <app-loading></app-loading>
     </ng-container>
 
 
@@ -72,7 +72,7 @@
           </button>
           <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
         </div>
-        <button routerLink="/home" (click)="this.sessionSrv.endSession()">End Session</button>
+        <button (click)="this.sessionSrv.endSession()">End Session</button>
       </div>
 
     </ng-container>
