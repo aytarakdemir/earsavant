@@ -6,80 +6,86 @@
   </ng-container>
 
 
+
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.Active">
-    <app-progress-info></app-progress-info>
-    <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
 
-    <div class="cet-controls-wrapper">
-      <div class="cet-scale">
-        <button 
-          *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
-          [disabled]="!this.keySrv.possibleRandomNoteIndices().includes(i)"
-          class="cet-note"
-          id="{{ 'note-' + i }}"
-          (click)="userGuess(note)"
-          
-        >
-          {{
-            this.keySrv.selectedSolfegeList()[
-              i % this.keySrv.selectedSolfegeList().length
-            ]
-          }}
-        </button>
-      </div>
+    <ng-container *ngIf="!this.audioSrv.samplerReady()">
+      <p>Loading...</p>
+    </ng-container>
+
+
+    <ng-container *ngIf="this.audioSrv.samplerReady()">
+      <app-progress-info></app-progress-info>
+      <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
   
-      <div class="cet-controls">
-        <button
-          (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
-        >
-          Note
-        </button>
-        <button
-          (click)="
-            this.audioSrv.playProgression([
-              [
-                this.keySrv.selectedNoteList()[0],
-                this.keySrv.selectedNoteList()[2],
-                this.keySrv.selectedNoteList()[4]
-              ],
-              [
-                this.keySrv.selectedNoteList()[3],
-                this.keySrv.selectedNoteList()[5],
-                this.keySrv.selectedNoteList()[0]
-              ],
-              [
-                this.keySrv.selectedNoteList()[4],
-                this.keySrv.selectedNoteList()[6],
-                this.keySrv.selectedNoteList()[1]
-              ],
-              [
-                this.keySrv.selectedNoteList()[0],
-                this.keySrv.selectedNoteList()[2],
-                this.keySrv.selectedNoteList()[4]
+      <div class="cet-controls-wrapper">
+        <div class="cet-scale">
+          <button 
+            *ngFor="let note of this.keySrv.selectedNoteList(); let i = index"
+            [disabled]="!this.keySrv.possibleRandomNoteIndices().includes(i)"
+            class="cet-note"
+            id="{{ 'note-' + i }}"
+            (click)="userGuess(note)"
+            
+          >
+            {{
+              this.keySrv.selectedSolfegeList()[
+                i % this.keySrv.selectedSolfegeList().length
               ]
-            ])
-          "
-        >
-          Play Progression
-        </button>
-        <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
+            }}
+          </button>
+        </div>
+    
+        <div class="cet-controls">
+          <button [disabled]="!this.audioSrv.samplerReady()"
+            (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
+          >
+            Note
+          </button>
+          <button [disabled]="!this.audioSrv.samplerReady()"
+            (click)="
+              this.audioSrv.playProgression([
+                [
+                  this.keySrv.selectedNoteList()[0],
+                  this.keySrv.selectedNoteList()[2],
+                  this.keySrv.selectedNoteList()[4]
+                ],
+                [
+                  this.keySrv.selectedNoteList()[3],
+                  this.keySrv.selectedNoteList()[5],
+                  this.keySrv.selectedNoteList()[0]
+                ],
+                [
+                  this.keySrv.selectedNoteList()[4],
+                  this.keySrv.selectedNoteList()[6],
+                  this.keySrv.selectedNoteList()[1]
+                ],
+                [
+                  this.keySrv.selectedNoteList()[0],
+                  this.keySrv.selectedNoteList()[2],
+                  this.keySrv.selectedNoteList()[4]
+                ]
+              ])
+            "
+          >
+            Play Progression
+          </button>
+          <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
+        </div>
+        <button routerLink="/home" (click)="this.sessionSrv.endSession()">End Session</button>
       </div>
-      <button routerLink="/home" (click)="this.sessionSrv.endSession()">End Session</button>
-  
-      <!-- <div class="cet-score">
-        <p>Correct: {{this.scoreSrv.currentScore().correct}}</p>
-        <p>Wrong: {{this.scoreSrv.currentScore().incorrect}}</p>
-      
-      </div> -->
 
-    </div>
+    </ng-container>
+
+    
+    
   </ng-container>
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.AfterSession">
     <p>Fin</p>
     <app-progress-info></app-progress-info>
     <p> {{this.sessionSrv.results.correctCount}} / {{this.sessionSrv.results.questionCount}}</p>
-    <button (click)="this.sessionSrv.resetSession()">Restart</button>
-    <button routerLink="/home" (click)="this.sessionSrv.resetSession()">To Main Menu</button>
+    <button (click)="this.resetSession()">Restart</button>
+    <button routerLink="/home" (click)="this.resetSession()">To Main Menu</button>
   </ng-container>
 </div>

@@ -1,4 +1,4 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
@@ -28,7 +28,43 @@ export class FunctionalTrainerComponent {
     public audioSrv: AudioService,
     public keySrv: KeyService,
     public sessionSrv: SessionService,
-  ) {}
+  ) {
+
+    effect(async () => {
+      if (this.audioSrv.samplerReady()) {
+        untracked(()=> {
+          this.audioSrv.playProgression(
+            [
+              [
+                this.keySrv.selectedNoteList()[0],
+                this.keySrv.selectedNoteList()[2],
+                this.keySrv.selectedNoteList()[4],
+              ],
+              [
+                this.keySrv.selectedNoteList()[3],
+                this.keySrv.selectedNoteList()[5],
+                this.keySrv.selectedNoteList()[0],
+              ],
+              [
+                this.keySrv.selectedNoteList()[4],
+                this.keySrv.selectedNoteList()[6],
+                this.keySrv.selectedNoteList()[1],
+              ],
+              [
+                this.keySrv.selectedNoteList()[0],
+                this.keySrv.selectedNoteList()[2],
+                this.keySrv.selectedNoteList()[4],
+              ],
+            ]
+          );
+      
+          this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+
+        })
+      }
+    });
+
+  }
 
   ngOnInit() {
     this.sessionSrv.resetSession();
@@ -199,40 +235,20 @@ export class FunctionalTrainerComponent {
 
   initialize() {
     this.audioSrv.start();
-    this.trainerStarted.set(true);
     this.keySrv.randomizeWorkingKey();
     this.sessionSrv.startSession(5);
+    this.trainerStarted.set(true);
+    
+    
+  }
 
-    setTimeout(()=> {
-      this.audioSrv.playProgression(
-        [
-          [
-            this.keySrv.selectedNoteList()[0],
-            this.keySrv.selectedNoteList()[2],
-            this.keySrv.selectedNoteList()[4],
-          ],
-          [
-            this.keySrv.selectedNoteList()[3],
-            this.keySrv.selectedNoteList()[5],
-            this.keySrv.selectedNoteList()[0],
-          ],
-          [
-            this.keySrv.selectedNoteList()[4],
-            this.keySrv.selectedNoteList()[6],
-            this.keySrv.selectedNoteList()[1],
-          ],
-          [
-            this.keySrv.selectedNoteList()[0],
-            this.keySrv.selectedNoteList()[2],
-            this.keySrv.selectedNoteList()[4],
-          ],
-        ]
-      );
-  
-      this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+  resetSession() {
+    this.sessionSrv.resetSession();
+    this.audioSrv.samplerReady.set(false);
+  }
 
-    },500);
-
+  ngOnDestroy() {
+    this.audioSrv.samplerReady.set(false);
   }
 }
 

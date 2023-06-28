@@ -11,7 +11,7 @@ export class AudioService {
   public melodyActive: WritableSignal<boolean> = signal(false);
   private sampler!: Tone.Sampler;
 
-  private samplerReady: boolean = false;
+  public samplerReady: WritableSignal<boolean> = signal(false);
 
   private instrument!: Tone.PolySynth;
   public start() {
@@ -51,7 +51,7 @@ export class AudioService {
       release: 0.5,
       baseUrl: "https://tonejs.github.io/audio/salamander/",
       onload: () => {
-        this.samplerReady = true;
+        this.samplerReady.set(true);
       }
     }).toDestination();
   }
