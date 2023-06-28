@@ -37,12 +37,12 @@
         </div>
     
         <div class="cet-controls">
-          <button [disabled]="!this.audioSrv.samplerReady()"
+          <button
             (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
           >
             Note
           </button>
-          <button [disabled]="!this.audioSrv.samplerReady()"
+          <button
             (click)="
               this.audioSrv.playProgression([
                 [
