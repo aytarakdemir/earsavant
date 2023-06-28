@@ -11,9 +11,13 @@ export class AudioService {
   public melodyActive: WritableSignal<boolean> = signal(false);
   private sampler!: Tone.Sampler;
 
+  private samplerReady: boolean = false;
+
   private instrument!: Tone.PolySynth;
   public start() {
-    Tone.start();
+    if (Tone.Transport.state !== "started") {
+      Tone.start();
+    }
     Tone.Destination.volume.value = -5;
 
     this.sampler = new Tone.Sampler({
@@ -46,6 +50,9 @@ export class AudioService {
       },
       release: 0.5,
       baseUrl: "https://tonejs.github.io/audio/salamander/",
+      onload: () => {
+        this.samplerReady = true;
+      }
     }).toDestination();
   }
 
@@ -70,7 +77,7 @@ export class AudioService {
     lag: number = 0,
     sustainTime: number = 0.3
   ): void {
-    if (Tone.context.state !== 'suspended') {      
+    if (Tone.context.state !== 'suspended' || !this.samplerReady) {      
       Tone.loaded().then(() => {
         const now = Tone.context.currentTime;
         this.sampler.triggerAttackRelease(note, sustainTime, now + lag);
@@ -83,7 +90,7 @@ export class AudioService {
     spaceTime: number = 0.3,
     sustainTime: number = 0.3
   ) {
-    if (this.melodyActive()) return;
+    if (this.melodyActive() || !this.samplerReady) return;
     
     this.setMelodyActive();
     notes.forEach((note, index) => {
@@ -99,7 +106,7 @@ export class AudioService {
     lag: number = 0,
     sustainTime: number = 0.5
   ): void {
-    if (Tone.context.state !== 'suspended') {      
+    if (Tone.context.state !== 'suspended' || !this.samplerReady) {      
       Tone.loaded().then(() => {
         const now = Tone.context.currentTime;
         this.sampler.triggerAttackRelease(notes, sustainTime, now + lag);
@@ -112,12 +119,18 @@ export class AudioService {
     spaceTime: number = 0.3,
     sustainTime: number = 0.3
   ) {
-    if (this.chordProgressionActive()) return;
+    if (this.chordProgressionActive() || !this.samplerReady) return;
     this.setProgressionActive();
-    chords.forEach((chord, index) => {
-      this.playChord(chord, index * spaceTime, sustainTime);
-    }, (chords.length - 1) * spaceTime + sustainTime);
+
+    const part = new Tone.Part(((time, value) => {
+      this.sampler.triggerAttackRelease(value.chord, sustainTime, time);
+    }), chords.map(((chord, i)=>{return {chord: chord, time: i * spaceTime}}))).start(0);
+    Tone.Transport.start();
+
+
     setTimeout(() => {
+      part.stop()
+      Tone.Transport.stop();
       this.setProgressionPassive();
     }, (chords.length - 1) * (spaceTime * 1000) + (sustainTime * 1000));
   }
