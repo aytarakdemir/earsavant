@@ -16,10 +16,6 @@ export class AudioService {
     Tone.start();
     Tone.Destination.volume.value = -5;
 
-    
-    this.instrument = new Tone.PolySynth().toDestination()
-
-
     this.sampler = new Tone.Sampler({
       urls: {
         "C6": "C6.mp3",
@@ -77,9 +73,7 @@ export class AudioService {
     if (Tone.context.state !== 'suspended') {      
       Tone.loaded().then(() => {
         const now = Tone.context.currentTime;
-        this.sampler.triggerAttack(note, now + lag);
-        this.sampler.triggerRelease(note, now + lag + sustainTime);
-      
+        this.sampler.triggerAttackRelease(note, sustainTime, now + lag);
       })
     }
   }
@@ -105,9 +99,12 @@ export class AudioService {
     lag: number = 0,
     sustainTime: number = 0.5
   ): void {
-    notes.forEach((note: string) => {
-      this.playNote(note, lag, sustainTime);
-    });
+    if (Tone.context.state !== 'suspended') {      
+      Tone.loaded().then(() => {
+        const now = Tone.context.currentTime;
+        this.sampler.triggerAttackRelease(notes, sustainTime, now + lag);
+      })
+    }
   }
 
   public playProgression(
