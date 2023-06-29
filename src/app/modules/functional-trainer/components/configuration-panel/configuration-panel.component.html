@@ -75,10 +75,13 @@
             </div>
           </div>
         </div>
-        <button (click)="removeNestedFormGroup(i)">Delete</button>
+        <button (click)="removeNestedFormGroup(i)" *ngIf="this.chordsProgressionConfigFormArray.controls.length > 1">Delete</button>
       </div>
     </div>
   </div>
   <button (click)="addNestedFormGroup()">Add Chord</button>
 
+  <button (click)="this.configSrv.aa()">aa</button>
 </form>
+
+<button (click)="apply()">Apply</button>

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { WalkMode } from '../../pages/functional-trainer/functional-trainer.component';
+import { ConfigService } from '../../services/config.service';
 
 
 @Component({
@@ -16,15 +17,27 @@ export class ConfigurationPanelComponent {
   WalkMode = WalkMode;
   possibleNotesSubscription: any;
 
-  constructor(public keySrv: KeyService, private formBuilder: FormBuilder) {
+  constructor(public keySrv: KeyService, private formBuilder: FormBuilder, public configSrv: ConfigService) {
     this.myForm = this.formBuilder.group({
-      octaveConfigLow: [2],
-      octaveConfigHigh: [6],
-      possibleNotesConfig: this.formBuilder.array([true,false,true,false,true,true,false,true,false,true,false,true]),
-      scaleConfig: this.formBuilder.array([true,null,true,null,true,true,null,true,null,true,null,true]),
-      walkMode: [WalkMode.ToRoot],
+      octaveConfigLow: '',
+      octaveConfigHigh: '',
+      possibleNotesConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
+      scaleConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
+      walkMode: [],
       chordsProgressionConfig: this.formBuilder.array([this.createChordFormGroup()]),
     });
+
+
+    effect(() => {
+      while(this.chordsProgressionConfigFormArray.controls.length !== 0) {
+        this.removeNestedFormGroup(0);
+      }
+      for (let i = 0; i < this.configSrv.configObj().chordsProgressionConfig.length; i++) {
+        this.addNestedFormGroup();
+      }
+      this.myForm.setValue(this.configSrv.configObj());
+
+    })
 
     this.possibleNotesSubscription = this.possibleNotesConfigFormArray.valueChanges.subscribe(possibleNotesArr => {
       possibleNotesArr.forEach((note:boolean, i:number) => {
@@ -36,11 +49,13 @@ export class ConfigurationPanelComponent {
       })
     });
 
-    this.myForm.valueChanges.subscribe(form => {
-      console.log(form);
-    }
 
-    )
+
+  
+  }
+  
+  apply() {
+    this.configSrv.configObj.set(this.myForm.value);
   }
 
   createChordFormGroup(): FormGroup {
@@ -55,7 +70,6 @@ export class ConfigurationPanelComponent {
   }
 
   removeNestedFormGroup(index: number) {
-    if (this.chordsProgressionConfigFormArray.length === 1) return;
     const nestedFormArray = this.myForm.get('chordsProgressionConfig') as FormArray;
     nestedFormArray.removeAt(index);
   }
