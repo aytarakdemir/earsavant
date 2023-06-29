@@ -9,12 +9,8 @@
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.Active">
 
-    <ng-container *ngIf="!this.audioSrv.samplerReady()">
-      <app-loading></app-loading>
-    </ng-container>
 
-
-    <ng-container *ngIf="this.audioSrv.samplerReady()">
+    <ng-container>
       <app-progress-info></app-progress-info>
       <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
   

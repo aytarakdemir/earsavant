@@ -1,1 +1,5 @@
-<p class="cet-loading">Loading</p>
+<div *ngIf="this.loadingSrv.loading()">
+    <div class="cet-loading-page">
+        <p class="cet-loading">Loading</p>
+    </div>
+</div>

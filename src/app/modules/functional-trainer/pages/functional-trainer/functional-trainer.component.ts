@@ -3,6 +3,7 @@ import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
 import { SessionService, SessionState } from '../../services/session.service';
+import { LoadingService } from 'src/app/shared/services/loading/loading.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -28,11 +29,13 @@ export class FunctionalTrainerComponent {
     public audioSrv: AudioService,
     public keySrv: KeyService,
     public sessionSrv: SessionService,
+    public loadingSrv: LoadingService,
   ) {
 
     effect(async () => {
       if (this.audioSrv.samplerReady()) {
         untracked(()=> {
+          this.loadingSrv.hideLoading();
           this.audioSrv.playProgression(
             [
               [
@@ -234,6 +237,7 @@ export class FunctionalTrainerComponent {
   }
 
   initialize() {
+    this.loadingSrv.showLoading();
     this.audioSrv.start();
     this.keySrv.randomizeWorkingKey();
     this.sessionSrv.startSession(5);
