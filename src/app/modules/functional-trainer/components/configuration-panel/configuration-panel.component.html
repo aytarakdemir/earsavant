@@ -1,0 +1,47 @@
+<form [formGroup]="myForm">
+    <div>
+      <label for="octaveConfigLow">Octave Config Low:</label>
+      <input type="number" id="octaveConfigLow" formControlName="octaveConfigLow">
+    </div>
+  
+    <div>
+      <label for="octaveConfigHigh">Octave Config High:</label>
+      <input type="number" id="octaveConfigHigh" formControlName="octaveConfigHigh">
+    </div>
+  
+    <div>
+      <label>Possible Notes Config:</label>
+      <div class="possible-checkboxes" formArrayName="possibleNotesConfig">
+        <div *ngFor="let noteControl of possibleNotesConfigFormArray.controls; let i = index">
+          <input type="checkbox" [formControlName]="i">
+          <label>{{ this.keySrv.solfegeList[i] }}</label>
+        </div>
+      </div>
+    </div>
+  
+    <div>
+      <label>Scale Config:</label>
+      <div class="scale-checkboxes" formArrayName="scaleConfig">
+        <div *ngFor="let scaleControl of scaleConfigFormArray.controls; let i = index">
+            <ng-container *ngIf="possibleNotesConfigFormArray.controls[i].value">
+                <input type="checkbox" [formControlName]="i">
+                <label>{{ this.keySrv.solfegeList[i] }}</label>
+
+            </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div>
+        <label for="walk-mode">Walk Mode:</label>
+        <select name="walk-mode" id="walk-mode" formControlName="walkMode">
+            <option value="{{WalkMode.ToRoot}}">To Root</option>
+            <option value="{{WalkMode.FromRoot}}">From Root</option>
+            <option value="{{WalkMode.JumpToRoot}}">Jump to Root</option>
+            <option value="{{WalkMode.NoWalk}}">No Walk</option>
+        </select>
+        
+      </div>
+
+  </form>
+  

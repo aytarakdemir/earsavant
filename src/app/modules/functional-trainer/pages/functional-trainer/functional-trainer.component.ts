@@ -4,6 +4,7 @@ import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
 import { SessionService, SessionState } from '../../services/session.service';
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -30,38 +31,14 @@ export class FunctionalTrainerComponent {
     public keySrv: KeyService,
     public sessionSrv: SessionService,
     public loadingSrv: LoadingService,
+    public configSrv: ConfigService
   ) {
 
     effect(async () => {
       if (this.audioSrv.samplerReady()) {
         untracked(()=> {
           this.loadingSrv.hideLoading();
-          this.audioSrv.playProgression(
-            [
-              [
-                this.keySrv.selectedNoteList()[0],
-                this.keySrv.selectedNoteList()[2],
-                this.keySrv.selectedNoteList()[4],
-              ],
-              [
-                this.keySrv.selectedNoteList()[3],
-                this.keySrv.selectedNoteList()[5],
-                this.keySrv.selectedNoteList()[0],
-              ],
-              [
-                this.keySrv.selectedNoteList()[4],
-                this.keySrv.selectedNoteList()[6],
-                this.keySrv.selectedNoteList()[1],
-              ],
-              [
-                this.keySrv.selectedNoteList()[0],
-                this.keySrv.selectedNoteList()[2],
-                this.keySrv.selectedNoteList()[4],
-              ],
-            ]
-          );
-      
-          this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+          this.playSelectedProgressionAndNote();
 
         })
       }
@@ -79,34 +56,38 @@ export class FunctionalTrainerComponent {
     this.sessionSrv.goToNextQuestion();
 
     if (this.sessionSrv.state() === SessionState.Active) {
-      this.audioSrv.playProgression(
-        [
-          [
-            this.keySrv.selectedNoteList()[0],
-            this.keySrv.selectedNoteList()[2],
-            this.keySrv.selectedNoteList()[4],
-          ],
-          [
-            this.keySrv.selectedNoteList()[3],
-            this.keySrv.selectedNoteList()[5],
-            this.keySrv.selectedNoteList()[0],
-          ],
-          [
-            this.keySrv.selectedNoteList()[4],
-            this.keySrv.selectedNoteList()[6],
-            this.keySrv.selectedNoteList()[1],
-          ],
-          [
-            this.keySrv.selectedNoteList()[0],
-            this.keySrv.selectedNoteList()[2],
-            this.keySrv.selectedNoteList()[4],
-          ],
-        ]
-      );
-  
-      this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+      this.playSelectedProgressionAndNote();
 
     }
+  }
+
+  playSelectedProgressionAndNote() {
+    this.audioSrv.playProgression(
+      [
+        [
+          this.keySrv.selectedNoteList()[0],
+          this.keySrv.selectedNoteList()[2],
+          this.keySrv.selectedNoteList()[4],
+        ],
+        [
+          this.keySrv.selectedNoteList()[3],
+          this.keySrv.selectedNoteList()[5],
+          this.keySrv.selectedNoteList()[0],
+        ],
+        [
+          this.keySrv.selectedNoteList()[4],
+          this.keySrv.selectedNoteList()[6],
+          this.keySrv.selectedNoteList()[1],
+        ],
+        [
+          this.keySrv.selectedNoteList()[0],
+          this.keySrv.selectedNoteList()[2],
+          this.keySrv.selectedNoteList()[4],
+        ],
+      ]
+    );
+
+    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
   }
 
   userGuess(note: string) {
@@ -262,7 +243,7 @@ enum GuessState {
   failure = 'fail',
 }
 
-enum WalkMode {
+export enum WalkMode {
   ToRoot = 'toRoot',
   FromRoot = 'fromRoot',
   JumpToRoot = 'jumpToRoot',

@@ -22,7 +22,7 @@ export class KeyService {
     'B',
   ];
 
-  private solfegeList: string[] = [
+  public solfegeList: string[] = [
     'Do',
     'Ra',
     'Re',
@@ -68,7 +68,8 @@ export class KeyService {
   }
 
   public randomizeWorkingKey(
-    possibleNotes: number[] = _.range(this.selectedNoteList().length)
+    possibleNotes: number[] = _.range(this.selectedNoteList().length),
+    octaveRange: { low: number; high: number } = { low: 2, high: this.octaves.length - 1 },
   ): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
     this.selectedRootNote.set(root);
@@ -77,7 +78,7 @@ export class KeyService {
     );
     this.setRandomNote(
       root,
-      { low: 2, high: this.octaves.length - 1 },
+      octaveRange,
       possibleNotes
     );
   }

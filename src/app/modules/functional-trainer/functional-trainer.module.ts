@@ -5,17 +5,20 @@ import { FunctionalTrainerRoutingModule } from './functional-trainer-routing.mod
 import { FunctionalTrainerComponent } from './pages/functional-trainer/functional-trainer.component';
 import { ProgressInfoComponent } from './components/progress-info/progress-info.component';
 import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
-
+import { ConfigurationPanelComponent } from './components/configuration-panel/configuration-panel.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     FunctionalTrainerComponent,
-    ProgressInfoComponent
+    ProgressInfoComponent,
+    ConfigurationPanelComponent
   ],
   imports: [
     CommonModule,
     FunctionalTrainerRoutingModule,
-    LoadingComponent
+    LoadingComponent,
+    ReactiveFormsModule
   ]
 })
 export class FunctionalTrainerModule { }

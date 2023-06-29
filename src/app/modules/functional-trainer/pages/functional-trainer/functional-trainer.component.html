@@ -1,8 +1,9 @@
 <div class="cet-functional-wrapper">
   <h2>Functional Trainer</h2>
 
-  <ng-container>
-    <button (click)="initialize()" *ngIf="this.sessionSrv.state() === SessionState.FirstInit">Start</button>
+  <ng-container *ngIf="this.sessionSrv.state() === SessionState.FirstInit">
+    <app-configuration-panel></app-configuration-panel>
+    <button (click)="initialize()" >Start</button>
   </ng-container>
 
 
