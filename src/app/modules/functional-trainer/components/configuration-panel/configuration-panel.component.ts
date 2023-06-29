@@ -18,11 +18,12 @@ export class ConfigurationPanelComponent {
 
   constructor(public keySrv: KeyService, private formBuilder: FormBuilder) {
     this.myForm = this.formBuilder.group({
-      octaveConfigLow: [2], // Provide a default value for number control
-      octaveConfigHigh: [6], // Provide a default value for number control
-      possibleNotesConfig: this.formBuilder.array([true,false,true,false,true,true,false,true,false,true,false,true]), // Create an empty form array
-      scaleConfig: this.formBuilder.array([true,null,true,null,true,true,null,true,null,true,null,true]), // Create an empty form array
-      walkMode: [WalkMode.ToRoot]
+      octaveConfigLow: [2],
+      octaveConfigHigh: [6],
+      possibleNotesConfig: this.formBuilder.array([true,false,true,false,true,true,false,true,false,true,false,true]),
+      scaleConfig: this.formBuilder.array([true,null,true,null,true,true,null,true,null,true,null,true]),
+      walkMode: [WalkMode.ToRoot],
+      chordsProgressionConfig: this.formBuilder.array([this.createChordFormGroup()]),
     });
 
     this.possibleNotesSubscription = this.possibleNotesConfigFormArray.valueChanges.subscribe(possibleNotesArr => {
@@ -42,11 +43,37 @@ export class ConfigurationPanelComponent {
     )
   }
 
+  createChordFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      chordNotes: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false])
+    });
+  }
+
+  addNestedFormGroup() {
+    if (this.chordsProgressionConfigFormArray.length > 10) return;
+    this.chordsProgressionConfigFormArray.push(this.createChordFormGroup());
+  }
+
+  removeNestedFormGroup(index: number) {
+    if (this.chordsProgressionConfigFormArray.length === 1) return;
+    const nestedFormArray = this.myForm.get('chordsProgressionConfig') as FormArray;
+    nestedFormArray.removeAt(index);
+  }
+
   get possibleNotesConfigFormArray() {
     return this.myForm.controls['possibleNotesConfig'] as FormArray;
   }
   get scaleConfigFormArray() {
     return this.myForm.controls['scaleConfig'] as FormArray;
+  }
+
+  get chordsProgressionConfigFormArray() {
+    return this.myForm.controls['chordsProgressionConfig'] as FormArray;
+  }
+
+  get chordNotes() {
+    const nestedFormGroup = this.chordsProgressionConfigFormArray.controls[0] as FormGroup;
+    return nestedFormGroup .get('chordNotes') as FormArray;
   }
   
 

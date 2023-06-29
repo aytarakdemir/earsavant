@@ -1,47 +1,84 @@
 <form [formGroup]="myForm">
-    <div>
-      <label for="octaveConfigLow">Octave Config Low:</label>
-      <input type="number" id="octaveConfigLow" formControlName="octaveConfigLow">
+  <div>
+    <label for="octaveConfigLow">Octave Config Low:</label>
+    <input
+      type="number"
+      id="octaveConfigLow"
+      formControlName="octaveConfigLow"
+    />
+  </div>
+
+  <div>
+    <label for="octaveConfigHigh">Octave Config High:</label>
+    <input
+      type="number"
+      id="octaveConfigHigh"
+      formControlName="octaveConfigHigh"
+    />
+  </div>
+  <div>
+    <label for="walk-mode">Walk Mode:</label>
+    <select name="walk-mode" id="walk-mode" formControlName="walkMode">
+      <option value="{{ WalkMode.ToRoot }}">To Root</option>
+      <option value="{{ WalkMode.FromRoot }}">From Root</option>
+      <option value="{{ WalkMode.JumpToRoot }}">Jump to Root</option>
+      <option value="{{ WalkMode.NoWalk }}">No Walk</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Possible Notes Config:</label>
+    <div class="possible-checkboxes" formArrayName="possibleNotesConfig">
+      <div
+        *ngFor="
+          let noteControl of possibleNotesConfigFormArray.controls;
+          let i = index
+        "
+      >
+        <input type="checkbox" [formControlName]="i" />
+        <label>{{ this.keySrv.solfegeList[i] }}</label>
+      </div>
     </div>
-  
-    <div>
-      <label for="octaveConfigHigh">Octave Config High:</label>
-      <input type="number" id="octaveConfigHigh" formControlName="octaveConfigHigh">
-    </div>
-  
-    <div>
-      <label>Possible Notes Config:</label>
-      <div class="possible-checkboxes" formArrayName="possibleNotesConfig">
-        <div *ngFor="let noteControl of possibleNotesConfigFormArray.controls; let i = index">
-          <input type="checkbox" [formControlName]="i">
+  </div>
+
+  <div>
+    <label>Scale Config:</label>
+    <div class="scale-checkboxes" formArrayName="scaleConfig">
+      <div
+        *ngFor="
+          let scaleControl of scaleConfigFormArray.controls;
+          let i = index
+        "
+      >
+        <ng-container *ngIf="possibleNotesConfigFormArray.controls[i].value">
+          <input type="checkbox" [formControlName]="i" />
           <label>{{ this.keySrv.solfegeList[i] }}</label>
-        </div>
+        </ng-container>
       </div>
     </div>
-  
-    <div>
-      <label>Scale Config:</label>
-      <div class="scale-checkboxes" formArrayName="scaleConfig">
-        <div *ngFor="let scaleControl of scaleConfigFormArray.controls; let i = index">
-            <ng-container *ngIf="possibleNotesConfigFormArray.controls[i].value">
-                <input type="checkbox" [formControlName]="i">
-                <label>{{ this.keySrv.solfegeList[i] }}</label>
+  </div>
 
-            </ng-container>
+  <div>
+    <label>Chord Progression:</label>
+    <div class="scale-checkboxes" formArrayName="chordsProgressionConfig">
+      <div
+        *ngFor="
+          let chordsProgression of chordsProgressionConfigFormArray.controls;
+          let i = index
+        "
+      >
+        <div [formGroupName]="i">
+          <div formArrayName="chordNotes">
+            <div *ngFor="let chordNotes of chordNotes.controls; let j = index">
+              <input type="checkbox" [formControlName]="j" />
+              <label>{{ this.keySrv.solfegeList[j] }}</label>
+            </div>
+          </div>
         </div>
+        <button (click)="removeNestedFormGroup(i)">Delete</button>
       </div>
     </div>
+  </div>
+  <button (click)="addNestedFormGroup()">Add Chord</button>
 
-    <div>
-        <label for="walk-mode">Walk Mode:</label>
-        <select name="walk-mode" id="walk-mode" formControlName="walkMode">
-            <option value="{{WalkMode.ToRoot}}">To Root</option>
-            <option value="{{WalkMode.FromRoot}}">From Root</option>
-            <option value="{{WalkMode.JumpToRoot}}">Jump to Root</option>
-            <option value="{{WalkMode.NoWalk}}">No Walk</option>
-        </select>
-        
-      </div>
-
-  </form>
-  
+</form>
