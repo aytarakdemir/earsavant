@@ -12,17 +12,17 @@ import { ConfigService } from '../../services/config.service';
   styleUrls: ['./configuration-panel.component.scss']
 })
 export class ConfigurationPanelComponent {
-  myForm: FormGroup;
+  configForm: FormGroup;
 
   WalkMode = WalkMode;
   possibleNotesSubscription: any;
 
   constructor(public keySrv: KeyService, private formBuilder: FormBuilder, public configSrv: ConfigService) {
-    this.myForm = this.formBuilder.group({
+    this.configForm = this.formBuilder.group({
       octaveConfigLow: '',
       octaveConfigHigh: '',
-      possibleNotesConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
       scaleConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
+      possibleRandomNotesConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
       walkMode: [],
       chordsProgressionConfig: this.formBuilder.array([this.createChordFormGroup()]),
     });
@@ -35,27 +35,28 @@ export class ConfigurationPanelComponent {
       for (let i = 0; i < this.configSrv.configObj().chordsProgressionConfig.length; i++) {
         this.addNestedFormGroup();
       }
-      this.myForm.setValue(this.configSrv.configObj());
+      this.configForm.setValue(this.configSrv.configObj());
 
     })
 
-    this.possibleNotesSubscription = this.possibleNotesConfigFormArray.valueChanges.subscribe(possibleNotesArr => {
+    this.possibleNotesSubscription = this.scaleConfigFormArray.valueChanges.subscribe(possibleNotesArr => {
       possibleNotesArr.forEach((note:boolean, i:number) => {
         if (!note) {
-          this.scaleConfigFormArray.controls[i].setValue(null);
+          this.possibleRandomNotesConfigArray.controls[i].setValue(null);
         } else {
-          this.scaleConfigFormArray.controls[i].setValue(true);
+          this.possibleRandomNotesConfigArray.controls[i].setValue(true);
         }
       })
     });
 
 
+    this.configForm.valueChanges.subscribe(x => console.log(x));
 
   
   }
   
   apply() {
-    this.configSrv.configObj.set(this.myForm.value);
+    this.configSrv.configObj.set(this.configForm.value);
   }
 
   createChordFormGroup(): FormGroup {
@@ -70,19 +71,19 @@ export class ConfigurationPanelComponent {
   }
 
   removeNestedFormGroup(index: number) {
-    const nestedFormArray = this.myForm.get('chordsProgressionConfig') as FormArray;
+    const nestedFormArray = this.configForm.get('chordsProgressionConfig') as FormArray;
     nestedFormArray.removeAt(index);
   }
 
-  get possibleNotesConfigFormArray() {
-    return this.myForm.controls['possibleNotesConfig'] as FormArray;
-  }
   get scaleConfigFormArray() {
-    return this.myForm.controls['scaleConfig'] as FormArray;
+    return this.configForm.controls['scaleConfig'] as FormArray;
+  }
+  get possibleRandomNotesConfigArray() {
+    return this.configForm.controls['possibleRandomNotesConfig'] as FormArray;
   }
 
   get chordsProgressionConfigFormArray() {
-    return this.myForm.controls['chordsProgressionConfig'] as FormArray;
+    return this.configForm.controls['chordsProgressionConfig'] as FormArray;
   }
 
   get chordNotes() {

@@ -1,4 +1,4 @@
-<form [formGroup]="myForm">
+<form [formGroup]="configForm">
   <div>
     <label for="octaveConfigLow">Octave Config Low:</label>
     <input
@@ -27,11 +27,11 @@
   </div>
 
   <div>
-    <label>Possible Notes Config:</label>
-    <div class="possible-checkboxes" formArrayName="possibleNotesConfig">
+    <label>Scale Config:</label>
+    <div class="scale-checkboxes" formArrayName="scaleConfig">
       <div
         *ngFor="
-          let noteControl of possibleNotesConfigFormArray.controls;
+          let scaleControl of scaleConfigFormArray.controls;
           let i = index
         "
       >
@@ -42,15 +42,15 @@
   </div>
 
   <div>
-    <label>Scale Config:</label>
-    <div class="scale-checkboxes" formArrayName="scaleConfig">
+    <label>Possible Random Notes:</label>
+    <div class="possible-checkboxes" formArrayName="possibleRandomNotesConfig">
       <div
         *ngFor="
-          let scaleControl of scaleConfigFormArray.controls;
+          let noteControl of scaleConfigFormArray.controls;
           let i = index
         "
       >
-        <ng-container *ngIf="possibleNotesConfigFormArray.controls[i].value">
+        <ng-container *ngIf="scaleConfigFormArray.controls[i].value">
           <input type="checkbox" [formControlName]="i" />
           <label>{{ this.keySrv.solfegeList[i] }}</label>
         </ng-container>

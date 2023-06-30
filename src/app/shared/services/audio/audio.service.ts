@@ -1,6 +1,9 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import * as Tone from 'tone';
 
+/**
+ * For playing sounds and feeding signals about the state of the process.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -14,6 +17,10 @@ export class AudioService {
   public samplerReady: WritableSignal<boolean> = signal(false);
 
   private instrument!: Tone.PolySynth;
+
+  /**
+   * Initializes the Tone.js library. This method should be called by an user input before any other methods of the AudioService is called.
+   */
   public start() {
     if (Tone.Transport.state !== "started") {
       Tone.start();
@@ -71,6 +78,12 @@ export class AudioService {
     this.melodyActive.set(false);
   }
 
+  /**
+   * Plays the given note.
+   * @param note Note and octave number.
+   * @param lag Amount of time before the note begins to play. In seconds.
+   * @param sustainTime Amount of time the note sustains for. In seconds.
+   */
   public playNote(
     note: string,
     lag: number = 0,

@@ -3,6 +3,9 @@ import { AudioService } from '../audio/audio.service';
 import { signal } from '@angular/core';
 import * as _ from 'lodash';
 
+/**
+ * Prepares notes that will be fed into the AudioService.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -67,6 +70,11 @@ export class KeyService {
     this.randomizeWorkingKey();
   }
 
+  /**
+   * The key needs to change randomly for the given scale. A random note is selected as the answer.
+   * @param possibleNotes Which of the scale degrees can be the answer.
+   * @param octaveRange Changes random notes range
+   */
   public randomizeWorkingKey(
     possibleNotes: number[] = _.range(this.selectedNoteList().length),
     octaveRange: { low: number; high: number } = { low: 2, high: this.octaves.length - 1 },
