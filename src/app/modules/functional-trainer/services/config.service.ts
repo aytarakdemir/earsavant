@@ -25,6 +25,7 @@ export class ConfigService {
       possibleRandomNotesConfig: [true,null,true,null,true,true,null,true,null,true,null,true],
       walkMode: WalkMode.ToRoot,
       chordsProgressionConfig: [{chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},{chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]}],
+      chordsProgressionRandom: false
     }
   );
 
@@ -105,9 +106,21 @@ export class ConfigService {
           })
         })
 
-        this.chordProgressionConfig.set(chordsWithNotes);
+        this.chordProgressionConfig.set(this.configObj().chordsProgressionRandom ? this.randomizeOctaves(chordsWithNotes) : chordsWithNotes);
       })
     })
+  }
+
+  randomizeOctaves(chordProgression: string[][] ,octaveRange: {low: number, high: number} = {low: 2, high: 6}) {
+    return chordProgression.map((chord: string[]) => {
+      return chord.map((note: string) => {
+        return note.slice(0, -1) + String(this.getRandomNumber(octaveRange.low, octaveRange.high));
+      });
+    });
+  }
+
+  getRandomNumber(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
 
@@ -122,6 +135,7 @@ export class ConfigService {
       {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},
       {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},
       {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]}],
+      chordsProgressionRandom: true
     })
   }
 
