@@ -63,29 +63,9 @@ export class FunctionalTrainerComponent {
   }
 
   playSelectedProgressionAndNote() {
+    console.log(this.configSrv.chordProgressionConfig());
     this.audioSrv.playProgression(
-      [
-        [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-        [
-          this.keySrv.selectedNoteList()[3],
-          this.keySrv.selectedNoteList()[5],
-          this.keySrv.selectedNoteList()[0],
-        ],
-        [
-          this.keySrv.selectedNoteList()[4],
-          this.keySrv.selectedNoteList()[6],
-          this.keySrv.selectedNoteList()[1],
-        ],
-        [
-          this.keySrv.selectedNoteList()[0],
-          this.keySrv.selectedNoteList()[2],
-          this.keySrv.selectedNoteList()[4],
-        ],
-      ]
+      this.configSrv.chordProgressionConfig()
     );
 
     this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);

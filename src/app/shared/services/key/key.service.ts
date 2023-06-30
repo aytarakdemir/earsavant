@@ -130,9 +130,9 @@ export class KeyService {
     );
   }
 
-  public getKeyNotesForOctave(rootNote: string, octave: number): string[] {
-    const keyNotes = this.getKey(rootNote, this.keyScaleDegrees).map((note) => {
-      const selectedKey = this.getKey(rootNote, this.keyScaleDegrees);
+  public getKeyNotesForOctave(rootNote: string, octave: number, chromatic: boolean = false): string[] {
+    const keyNotes = this.getKey(rootNote, chromatic ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]: this.keyScaleDegrees).map((note) => {
+      const selectedKey = this.getKey(rootNote, chromatic ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]: this.keyScaleDegrees);
       var smallestNoteIndex = this.notes.length;
       selectedKey.forEach((note) => {
         if (this.notes.indexOf(note) < smallestNoteIndex) {

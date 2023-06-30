@@ -49,9 +49,6 @@ export class ConfigurationPanelComponent {
       })
     });
 
-
-    this.configForm.valueChanges.subscribe(x => console.log(x));
-
   
   }
   

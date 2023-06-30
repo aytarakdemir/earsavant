@@ -12,7 +12,7 @@ export class ConfigService {
   scaleConfig: WritableSignal<number[]> = signal([]);
   walkModeConfig: WritableSignal<WalkMode> = signal(WalkMode.ToRoot);
   octaveConfig: WritableSignal<{low: number, high: number}> = signal({low: 2, high: 2});
-
+  chordProgressionConfig: WritableSignal<string[][]> = signal([[]]);
 
   configObj: WritableSignal<any> = signal(
     {
@@ -66,7 +66,7 @@ export class ConfigService {
         this.walkModeConfig.set(this.configObj().walkMode);
 
 
-        let chordNotes = this.configObj().chordsProgressionConfig.map((chord: {chordNotes: boolean[]}) => {
+        let chordsWithIndex = this.configObj().chordsProgressionConfig.map((chord: {chordNotes: boolean[]}) => {
           return chord.chordNotes.reduce((acc:number[], curr:boolean, index:number) => {
             if (curr) {
               acc.push(index);
@@ -75,7 +75,17 @@ export class ConfigService {
           }, []);
   
         })
-        console.log(chordNotes);
+        console.log(chordsWithIndex);
+        
+        let chordsWithNotes = chordsWithIndex.map((chord: number[]) => {
+          return chord.map((scaleIndex) => {
+            return this.keySrv.getKeyNotesForOctave(this.keySrv.selectedRootNote(), 3, true)[scaleIndex];
+          })
+        })
+
+        this.chordProgressionConfig.set(chordsWithNotes);
+        
+        console.log(chordsWithNotes);
 
       });
     })
