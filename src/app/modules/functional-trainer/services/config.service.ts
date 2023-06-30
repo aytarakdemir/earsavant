@@ -37,7 +37,7 @@ export class ConfigService {
           return acc;
         }, []);
 
-        console.log(scaleNotes);
+        console.log('scaleNotes', scaleNotes);
         this.scaleConfig.set(scaleNotes);
         
         let i = 0
@@ -52,7 +52,9 @@ export class ConfigService {
         }, []);
         
         console.log('possibleNotes', possibleNotes);
-        possibleNotes.push(this.keySrv.selectedNoteList().length - 1);
+        if (possibleNotes[0] === 0) {
+          possibleNotes.push(possibleNotes.length);
+        }
         console.log('possibleNotes', possibleNotes);
         this.possibleRandomNotesConfig.set(possibleNotes);
 
