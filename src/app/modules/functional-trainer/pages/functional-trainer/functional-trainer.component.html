@@ -41,28 +41,7 @@
           </button>
           <button
             (click)="
-              this.audioSrv.playProgression([
-                [
-                  this.keySrv.selectedNoteList()[0],
-                  this.keySrv.selectedNoteList()[2],
-                  this.keySrv.selectedNoteList()[4]
-                ],
-                [
-                  this.keySrv.selectedNoteList()[3],
-                  this.keySrv.selectedNoteList()[5],
-                  this.keySrv.selectedNoteList()[0]
-                ],
-                [
-                  this.keySrv.selectedNoteList()[4],
-                  this.keySrv.selectedNoteList()[6],
-                  this.keySrv.selectedNoteList()[1]
-                ],
-                [
-                  this.keySrv.selectedNoteList()[0],
-                  this.keySrv.selectedNoteList()[2],
-                  this.keySrv.selectedNoteList()[4]
-                ]
-              ])
+              this.audioSrv.playProgression(this.configSrv.chordProgressionConfig())
             "
           >
             Play Progression
@@ -86,8 +65,3 @@
     <button routerLink="/home" (click)="this.resetSession()">To Main Menu</button>
   </ng-container>
 </div>
-
-<p>{{this.configSrv.scaleConfig()}}</p>
-<p>{{this.configSrv.possibleRandomNotesConfig()}}</p>
-<p>{{this.configSrv.walkModeConfig()}}</p>
-<p>{{this.configSrv.octaveConfig().low}}-{{this.configSrv.octaveConfig().high}}</p>

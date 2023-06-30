@@ -14,6 +14,9 @@ export class ConfigService {
   octaveConfig: WritableSignal<{low: number, high: number}> = signal({low: 2, high: 2});
   chordProgressionConfig: WritableSignal<string[][]> = signal([[]]);
 
+
+  chordsWithIndex: number[][] = [[]];
+
   configObj: WritableSignal<any> = signal(
     {
       octaveConfigLow: 2,
@@ -66,7 +69,7 @@ export class ConfigService {
         this.walkModeConfig.set(this.configObj().walkMode);
 
 
-        let chordsWithIndex = this.configObj().chordsProgressionConfig.map((chord: {chordNotes: boolean[]}) => {
+        this.chordsWithIndex = this.configObj().chordsProgressionConfig.map((chord: {chordNotes: boolean[]}) => {
           return chord.chordNotes.reduce((acc:number[], curr:boolean, index:number) => {
             if (curr) {
               acc.push(index);
@@ -75,11 +78,12 @@ export class ConfigService {
           }, []);
   
         })
-        console.log(chordsWithIndex);
+        console.log(this.chordsWithIndex);
         
-        let chordsWithNotes = chordsWithIndex.map((chord: number[]) => {
+        let key = this.keySrv.getKeyNotesForOctave(this.keySrv.selectedRootNote(), 3, true);
+        let chordsWithNotes = this.chordsWithIndex.map((chord: number[]) => {
           return chord.map((scaleIndex) => {
-            return this.keySrv.getKeyNotesForOctave(this.keySrv.selectedRootNote(), 3, true)[scaleIndex];
+            return key[scaleIndex];
           })
         })
 
@@ -88,6 +92,21 @@ export class ConfigService {
         console.log(chordsWithNotes);
 
       });
+    })
+
+    effect(() => {
+      this.keySrv.selectedRootNote();
+      untracked(() => {
+        let key = this.keySrv.getKeyNotesForOctave(this.keySrv.selectedRootNote(), 3, true)
+
+        let chordsWithNotes = this.chordsWithIndex.map((chord: number[]) => {
+          return chord.map((scaleIndex) => {
+            return key[scaleIndex];
+          })
+        })
+
+        this.chordProgressionConfig.set(chordsWithNotes);
+      })
     })
   }
 

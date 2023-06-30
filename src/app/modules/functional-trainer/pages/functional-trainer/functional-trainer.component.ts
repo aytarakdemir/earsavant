@@ -43,6 +43,18 @@ export class FunctionalTrainerComponent {
         })
       }
     });
+    effect(async () => {
+      this.configSrv.chordProgressionConfig()
+        untracked(()=> {
+          if (this.sessionSrv.state() === SessionState.Active && this.audioSrv.samplerReady()) {
+            this.playSelectedProgressionAndNote();
+      
+          }
+        })
+
+      
+      
+    });
 
 
   }
@@ -56,10 +68,7 @@ export class FunctionalTrainerComponent {
     this.guessFeedback.set(GuessState.default);
     this.sessionSrv.goToNextQuestion();
 
-    if (this.sessionSrv.state() === SessionState.Active) {
-      this.playSelectedProgressionAndNote();
 
-    }
   }
 
   playSelectedProgressionAndNote() {
@@ -68,7 +77,7 @@ export class FunctionalTrainerComponent {
       this.configSrv.chordProgressionConfig()
     );
 
-    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), 1.5);
+    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), this.configSrv.chordProgressionConfig().length * this.msMelodySpeed / 1000 + 0.5);
   }
 
   userGuess(note: string) {

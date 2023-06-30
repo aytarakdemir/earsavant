@@ -131,8 +131,9 @@ export class KeyService {
   }
 
   public getKeyNotesForOctave(rootNote: string, octave: number, chromatic: boolean = false): string[] {
-    const keyNotes = this.getKey(rootNote, chromatic ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]: this.keyScaleDegrees).map((note) => {
-      const selectedKey = this.getKey(rootNote, chromatic ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]: this.keyScaleDegrees);
+    let key = chromatic ? this.getKeyChromatic(rootNote) : this.getKey(rootNote, this.keyScaleDegrees);
+    const keyNotes = key.map((note) => {
+      const selectedKey = key;
       var smallestNoteIndex = this.notes.length;
       selectedKey.forEach((note) => {
         if (this.notes.indexOf(note) < smallestNoteIndex) {
@@ -178,6 +179,19 @@ export class KeyService {
         this.solfegeList[step]
       );
       this.selectedSolfegeList.set(solfegeArr)
+    });
+    return keyNotes;
+  }
+
+  private getKeyChromatic(
+    rootNote: string,
+  ): string[] {
+    this.notes.indexOf(rootNote);
+    var keyNotes: string[] = [];
+    _.range(this.solfegeList.length).forEach((step) => {
+      keyNotes.push(
+        this.notes[(this.notes.indexOf(rootNote) + step) % this.notes.length]
+      );
     });
     return keyNotes;
   }
