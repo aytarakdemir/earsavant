@@ -25,7 +25,8 @@ export class ConfigurationPanelComponent {
       possibleRandomNotesConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),
       walkMode: [],
       chordsProgressionConfig: this.formBuilder.array([this.createChordFormGroup()]),
-      chordsProgressionRandom: []
+      chordsProgressionRandom: [],
+      showChordsChromatic: []
     });
 
 
@@ -49,6 +50,8 @@ export class ConfigurationPanelComponent {
         }
       })
     });
+
+
 
   
   }

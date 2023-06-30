@@ -63,6 +63,10 @@
     <input type="checkbox" formControlName="chordsProgressionRandom">
   </div>
   <div>
+    <label>Show Chords Chromatic</label>
+    <input type="checkbox" formControlName="showChordsChromatic">
+  </div>
+  <div>
     <label>Chord Progression:</label>
     <div class="scale-checkboxes" formArrayName="chordsProgressionConfig">
       <div
@@ -73,9 +77,11 @@
       >
         <div [formGroupName]="i">
           <div formArrayName="chordNotes">
-            <div *ngFor="let chordNotes of chordNotes.controls; let j = index">
-              <input type="checkbox" [formControlName]="j" />
-              <label [class.not-in-key]="!this.scaleConfigFormArray.controls[j].value">{{ this.keySrv.solfegeList[j] }}</label>
+            <div *ngFor="let chordNotes of chordNotes.controls; let j = index" >
+              <ng-container *ngIf="this.configForm.controls['showChordsChromatic'].value || this.scaleConfigFormArray.controls[j].value">
+                <input type="checkbox" [formControlName]="j" />
+                <label [class.not-in-key]="!this.scaleConfigFormArray.controls[j].value">{{ this.keySrv.solfegeList[j] }}</label>
+              </ng-container>
             </div>
           </div>
         </div>

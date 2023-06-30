@@ -24,8 +24,9 @@ export class ConfigService {
       scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
       possibleRandomNotesConfig: [true,null,true,null,true,true,null,true,null,true,null,true],
       walkMode: WalkMode.ToRoot,
-      chordsProgressionConfig: [{chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},{chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]}],
-      chordsProgressionRandom: false
+      chordsProgressionConfig: [{chordNotes: [true,false,false,false,true,false,false,true,false,false,false,false]},{chordNotes: [true,false,false,false,false,true,false,false,false,true,false,false]}],
+      chordsProgressionRandom: false,
+      showChordsChromatic: false
     }
   );
 
@@ -111,7 +112,7 @@ export class ConfigService {
     })
   }
 
-  randomizeOctaves(chordProgression: string[][] ,octaveRange: {low: number, high: number} = {low: 2, high: 6}) {
+  randomizeOctaves(chordProgression: string[][] ,octaveRange: {low: number, high: number} = {low: 2, high: 5}) {
     return chordProgression.map((chord: string[]) => {
       return chord.map((note: string) => {
         return note.slice(0, -1) + String(this.getRandomNumber(octaveRange.low, octaveRange.high));
@@ -131,11 +132,12 @@ export class ConfigService {
       scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
       possibleRandomNotesConfig: [true,null,true,null,true,true,null,true,null,true,null,true],
       walkMode: WalkMode.ToRoot,
-      chordsProgressionConfig: [{chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},
-      {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},
-      {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]},
-      {chordNotes: [true,true,false,false,false,false,false,false,false,false,false,false]}],
-      chordsProgressionRandom: true
+      chordsProgressionConfig: [{chordNotes: [true,false,false,false,true,false,false,true,false,false,false,false]},
+      {chordNotes: [true,false,false,false,false,true,false,false,false,true,false,false]},
+      {chordNotes: [true,false,false,false,true,false,false,true,false,false,false,false]},
+      {chordNotes: [true,false,false,false,false,true,false,false,false,true,false,false]}],
+      chordsProgressionRandom: true,
+      showChordsChromatic: false
     })
   }
 
