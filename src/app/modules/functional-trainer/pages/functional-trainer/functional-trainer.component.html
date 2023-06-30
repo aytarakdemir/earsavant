@@ -86,3 +86,8 @@
     <button routerLink="/home" (click)="this.resetSession()">To Main Menu</button>
   </ng-container>
 </div>
+
+<p>{{this.configSrv.scaleConfig()}}</p>
+<p>{{this.configSrv.possibleRandomNotesConfig()}}</p>
+<p>{{this.configSrv.walkModeConfig()}}</p>
+<p>{{this.configSrv.octaveConfig().low}}-{{this.configSrv.octaveConfig().high}}</p>

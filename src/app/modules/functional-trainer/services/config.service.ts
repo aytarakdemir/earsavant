@@ -8,7 +8,10 @@ import { WalkMode } from '../pages/functional-trainer/functional-trainer.compone
   providedIn: 'root'
 })
 export class ConfigService {
-
+  possibleRandomNotesConfig: WritableSignal<number[]> = signal([]);
+  scaleConfig: WritableSignal<number[]> = signal([]);
+  walkModeConfig: WritableSignal<WalkMode> = signal(WalkMode.ToRoot);
+  octaveConfig: WritableSignal<{low: number, high: number}> = signal({low: 2, high: 2});
 
 
   configObj: WritableSignal<any> = signal(
@@ -35,20 +38,30 @@ export class ConfigService {
         }, []);
 
         console.log(scaleNotes);
+        this.scaleConfig.set(scaleNotes);
         
         let i = 0
         let possibleNotes = this.configObj().possibleRandomNotesConfig.reduce((acc:number[], curr:boolean) => {
-          if (curr !== null) {
-            i++;
-          }
           if (curr) {
             acc.push(i);
+          }
+          if (curr !== null) {
+            i++;
           }
           return acc;
         }, []);
         
-        console.log(possibleNotes);
+        console.log('possibleNotes', possibleNotes);
+        possibleNotes.push(this.keySrv.selectedNoteList().length - 1);
+        console.log('possibleNotes', possibleNotes);
+        this.possibleRandomNotesConfig.set(possibleNotes);
 
+
+        let octaveConfigObj = {low: this.configObj().octaveConfigLow, high: this.configObj().octaveConfigHigh};
+        this.octaveConfig.set(octaveConfigObj);
+
+
+        this.walkModeConfig.set(this.configObj().walkMode);
 
 
         let chordNotes = this.configObj().chordsProgressionConfig.map((chord: {chordNotes: boolean[]}) => {

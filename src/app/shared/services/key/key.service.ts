@@ -65,6 +65,7 @@ export class KeyService {
   public possibleRandomNoteIndices: WritableSignal<number[]> = signal(_.range(this.selectedNoteList().length));
 
   private randomizerWorkingOctave = 3;
+  private keyScaleDegrees = [0, 2, 4, 5, 7, 9, 11];
 
   constructor(private audioSrv: AudioService) {
     this.randomizeWorkingKey();
@@ -107,7 +108,7 @@ export class KeyService {
 
     this.possibleRandomNoteIndices.set(possibleNotes);
 
-    const selectedKey = this.getKey(rootNote);
+    const selectedKey = this.getKey(rootNote, this.keyScaleDegrees);
     const selectedNote =
       selectedKey[
         possibleNotes[
@@ -130,8 +131,8 @@ export class KeyService {
   }
 
   public getKeyNotesForOctave(rootNote: string, octave: number): string[] {
-    const keyNotes = this.getKey(rootNote).map((note) => {
-      const selectedKey = this.getKey(rootNote);
+    const keyNotes = this.getKey(rootNote, this.keyScaleDegrees).map((note) => {
+      const selectedKey = this.getKey(rootNote, this.keyScaleDegrees);
       var smallestNoteIndex = this.notes.length;
       selectedKey.forEach((note) => {
         if (this.notes.indexOf(note) < smallestNoteIndex) {
@@ -154,6 +155,10 @@ export class KeyService {
         this.octaves[this.octaves.indexOf(keyNotes[0].slice(-1)) + 1]
     );
     return keyNotes;
+  }
+
+  public setScaleDegrees(degrees: number[]) {
+    this.keyScaleDegrees = degrees;
   }
 
   private getKey(

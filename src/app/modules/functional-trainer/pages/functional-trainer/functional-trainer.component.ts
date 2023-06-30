@@ -44,6 +44,7 @@ export class FunctionalTrainerComponent {
       }
     });
 
+
   }
 
   ngOnInit() {
@@ -51,7 +52,7 @@ export class FunctionalTrainerComponent {
   }
 
   setNewKey() {
-    this.keySrv.randomizeWorkingKey();
+    this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig());
     this.guessFeedback.set(GuessState.default);
     this.sessionSrv.goToNextQuestion();
 
@@ -103,8 +104,8 @@ export class FunctionalTrainerComponent {
           Number(this.keySrv.selectedRandomNote().slice(-1))
       );
 
-      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn, WalkMode.ToRoot);
-      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn, WalkMode.ToRoot);
+      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn, this.configSrv.walkModeConfig());
+      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn, this.configSrv.walkModeConfig());
 
       this.audioSrv.playMelody(
         notesToWalkOn,
@@ -220,7 +221,8 @@ export class FunctionalTrainerComponent {
   initialize() {
     this.loadingSrv.showLoading();
     this.audioSrv.start();
-    this.keySrv.randomizeWorkingKey();
+    this.keySrv.setScaleDegrees(this.configSrv.scaleConfig());
+    this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig() );
     this.sessionSrv.startSession(5);
     this.trainerStarted.set(true);
     
