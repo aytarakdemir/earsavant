@@ -81,7 +81,13 @@ export class KeyService {
     octaveRange: { low: number; high: number } = { low: 2, high: this.octaves.length - 1 },
   ): void {
     const root = this.notes[Math.floor(Math.random() * this.notes.length)];
+
     this.selectedRootNote.set(root);
+    this.selectedRootNote.mutate(x => { x = x}); 
+    /* If the random root note is the same as the previous one, selectedRootNote won't get updated, thus will 
+    not trigger effect(). mutate() prevents this because it does not care if the value is the same as before. 
+    Not optimal, but only solution that I could find.*/
+
     this.selectedNoteList.set(
       this.getKeyNotesForOctave(root, this.randomizerWorkingOctave)
     );
