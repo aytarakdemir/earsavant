@@ -1,66 +1,38 @@
 
 
-// #region Color Palette
-$night: #141414ff;
-$jet: #292929ff;
-$white: #ffffffff;
-$french-gray: #d2d7dfff;
-$silver: #bdbbb0ff;
-$battleship-gray: #8a897cff;
-
-
-$licorice: #0e060fff;
-$azure-web: #edf7f6ff;
-$atomic-tangerine: #f7a278ff;
-$apple-green: #7E980B;
-$fandango: #af4d98ff;
-
-
-$sepia: #583807ff;
-$sepia-2: #764c1eff;
-$taupe: #48413fff;
-$bistre: #2a1605ff;
-$black: #030301ff;
-
-
-
-$dark-purple: #29112Cff;
-$dark-purple-2: #37173Bff;
-$pink-lavender: #e4b7e5ff;
-$celestial-blue: #009ddcff;
-$fandango: #af4d98ff;
-// #endregion
-
-
 
 //#region Color Variables
-$color-text-primary: $white;
-$color-text-secondary: $dark-purple;
+$color-text-primary: #000000;
+$color-text-secondary: #FFFFFF;
 
-$color-alpha: $celestial-blue;
-$color-beta: $fandango;
-$color-gamma: $pink-lavender;
-$color-delta: $dark-purple-2;
+$color-alpha: #D9D9D9;
+$color-alpha-accent: #B6B6B6; 
+$color-beta: #84B448;
+$color-beta-accent: #729A3F;
+$color-gamma: #FFD66D;
+$color-gamma-accent: #B4974C;
+$color-delta: #FF4141;
+$color-delta: #AB2B2B;
 
-$color-base: $dark-purple;
+$color-base: #FFFFFF;
 //#endregion
 
 
 
 //#region Font Variables
-$font-light: 'OakSans-Light';
-$font-regular: 'OakSans-Regular';
-$font-medium: 'OakSans-Medium';
-$font-semibold: 'OakSans-SemiBold';
-$font-bold: 'OakSans-Bold';
-$font-extrabold: 'OakSans-ExtraBold';
-$font-black: 'OakSans-Black';
+$font-light: 'Nunito-Light';
+$font-regular: 'Nunito-Regular';
+$font-medium: 'Nunito-Medium';
+$font-semibold: 'Nunito-SemiBold';
+$font-bold: 'Nunito-Bold';
+$font-extrabold: 'Nunito-ExtraBold';
+$font-black: 'Nunito-Black';
 
-$font-light-italic: 'OakSans-LightItalic';
-$font-regular-italic: 'OakSans-RegularItalic';
-$font-medium-italic: 'OakSans-MediumItalic';
-$font-semibold-italic: 'OakSans-SemiBoldItalic';
-$font-bold-italic: 'OakSans-BoldItalic';
-$font-extrabold-italic: 'OakSans-ExtraBoldItalic';
-$font-black-italic: 'OakSans-BlackItalic';
+$font-light-italic: 'Nunito-LightItalic';
+$font-regular-italic: 'Nunito-RegularItalic';
+$font-medium-italic: 'Nunito-MediumItalic';
+$font-semibold-italic: 'Nunito-SemiBoldItalic';
+$font-bold-italic: 'Nunito-BoldItalic';
+$font-extrabold-italic: 'Nunito-ExtraBoldItalic';
+$font-black-italic: 'Nunito-BlackItalic';
 //#endregion
