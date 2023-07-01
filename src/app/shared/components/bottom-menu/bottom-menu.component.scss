@@ -1,0 +1,24 @@
+@use "/src/styles/variables.scss" as var;
+
+
+.cet-bottom-menu-wrapper {
+    width: 100%;
+    height: 72px;
+    background-color: var.$color-alpha;
+    border-top: solid 3px var.$color-alpha-accent;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    button {
+        border: none;
+        background-color: none;
+        font-size: 20px;
+        font-family: var.$font-extrabold;
+    }
+}
+
+.active {
+    color: var.$color-text-secondary;
+    text-shadow: 2px 0 var.$color-alpha-accent, -2px 0 var.$color-alpha-accent, 0 2px var.$color-alpha-accent, 0 -2px var.$color-alpha-accent,
+    1px 1px var.$color-alpha-accent, -1px -1px var.$color-alpha-accent, 1px -1px var.$color-alpha-accent, -1px 1px var.$color-alpha-accent;
+}
