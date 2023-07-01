@@ -105,7 +105,7 @@ If you make changes to your Angular app and want to update the deployment, follo
 1. Build a new Docker image as shown above:
 
 ```bash
-    docker build -t my-angular-app .
+    docker build -t earsavant .
 ```
 
 
@@ -122,11 +122,11 @@ Replace CONTAINER_ID with the actual ID of the running container.
 3. Run the new Docker container using the updated image:
 
 ```bash
-    docker run -d -p 80:80 my-angular-app
+    docker run -d -p 80:80 earsavant
 ```
 
 
-That's it! Your Angular app should now be updated and running in the Docker container, accessible at http://localhost.
+Earsavant should now be updated and running in the Docker container, accessible at http://localhost:80.
 
 ## License
 
