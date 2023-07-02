@@ -25,14 +25,14 @@ p {
 
 h1 {
     font-size: 32px;
-    font-family: $font-extrabold;
+    font-family: $font2-black;
     padding: 0;
     margin: 0;
 }
 
 h2 {
     font-size: 24px;
-    font-family: $font-extrabold;
+    font-family: $font2-extrabold;
     padding: 0;
     margin: 0;
 }
@@ -41,19 +41,21 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 3px;
+    border-radius: 5px;
     height: 40px;
-    border: solid 3px $color-alpha-accent;
+    border: solid 2px $color-alpha-accent;
     background-color: $color-alpha;
     cursor: pointer;
     opacity: 1;
     transition: opacity 0.3;
     font-size: 16px;
     font-family: $font-extrabold;
-
+    box-shadow: 3px 3px 0px 0px #000; 
   
     &:hover {
-      background-color: #0084b8;
+      box-shadow: 0px 0px 0px 0px #000; 
+      transform: translateX(3px) translateY(3px);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
   
     &:disabled {
@@ -62,9 +64,7 @@ button {
     }
     &.cet-important-button {
       background-color: $color-beta;
-      border: solid 3px $color-beta-accent;
-      color: $color-text-secondary;
-      text-shadow: 2px 0 $color-beta-accent, -2px 0 $color-beta-accent, 0 2px $color-beta-accent, 0 -2px $color-beta-accent,
-             1px 1px $color-beta-accent, -1px -1px $color-beta-accent, 1px -1px $color-beta-accent, -1px 1px $color-beta-accent;
+      border: solid 2px $color-beta-accent;
+      color: $color-text-primary;
     }
   }

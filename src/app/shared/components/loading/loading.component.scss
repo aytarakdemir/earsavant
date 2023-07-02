@@ -28,16 +28,17 @@
     align-items: center;
     justify-content: center;
     margin: 12px;
-    border: dashed 3px var.$color-alpha-accent;
+    border: solid 3px var.$color-alpha-accent;
+    box-shadow: 4px 4px 0px 0px #000; 
     width: calc(100% - 30px);
     height: calc(100% - 81px);
 }
 
 .cet-loading {
     text-align: left;
-    width: 100px;
+    width: 150px;
     font-size: 20px;
-    font-family: var.$font-extrabold;
+    font-family: var.$font2-extrabold;
 }
 
 .cet-loading::after {

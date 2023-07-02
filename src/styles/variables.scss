@@ -5,14 +5,16 @@
 $color-text-primary: #000000;
 $color-text-secondary: #FFFFFF;
 
-$color-alpha: #D9D9D9;
-$color-alpha-accent: #B6B6B6; 
-$color-beta: #84B448;
-$color-beta-accent: #729A3F;
+$color-alpha: #FFFFFF;
+$color-alpha-accent: #000000; 
+$color-beta: #B5F400;
+$color-beta-accent: #000000;
 $color-gamma: #FFD66D;
 $color-gamma-accent: #B4974C;
 $color-delta: #FF4141;
-$color-delta: #AB2B2B;
+$color-delta-accent: #AB2B2B;
+$color-epsilon: #FF6767;
+$color-pi: #BB92FF;
 
 $color-base: #FFFFFF;
 //#endregion
@@ -20,19 +22,26 @@ $color-base: #FFFFFF;
 
 
 //#region Font Variables
-$font-light: 'Nunito-Light';
-$font-regular: 'Nunito-Regular';
-$font-medium: 'Nunito-Medium';
-$font-semibold: 'Nunito-SemiBold';
-$font-bold: 'Nunito-Bold';
-$font-extrabold: 'Nunito-ExtraBold';
-$font-black: 'Nunito-Black';
+$font-light: 'LexendDeca-Light';
+$font-regular: 'LexendDeca-Regular';
+$font-medium: 'LexendDeca-Medium';
+$font-semibold: 'LexendDeca-SemiBold';
+$font-bold: 'LexendDeca-Bold';
+$font-extrabold: 'LexendDeca-ExtraBold';
+$font-black: 'LexendDeca-Black';
+$font-extralight: 'LexendDeca-ExtraLight';
+$font-thin: 'LexendDeca-Thin';
 
-$font-light-italic: 'Nunito-LightItalic';
-$font-regular-italic: 'Nunito-RegularItalic';
-$font-medium-italic: 'Nunito-MediumItalic';
-$font-semibold-italic: 'Nunito-SemiBoldItalic';
-$font-bold-italic: 'Nunito-BoldItalic';
-$font-extrabold-italic: 'Nunito-ExtraBoldItalic';
-$font-black-italic: 'Nunito-BlackItalic';
+
+$font2-light: 'LexendMega-Light';
+$font2-regular: 'LexendMega-Regular';
+$font2-medium: 'LexendMega-Medium';
+$font2-semibold: 'LexendMega-SemiBold';
+$font2-bold: 'LexendMega-Bold';
+$font2-extrabold: 'LexendMega-ExtraBold';
+$font2-black: 'LexendMega-Black';
+$font2-extralight: 'LexendMega-ExtraLight';
+$font2-thin: 'LexendMega-Thin';
+
+
 //#endregion
