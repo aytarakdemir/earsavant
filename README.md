@@ -85,7 +85,7 @@ docker build -t earsavant .
 Once the Docker image is built, you can run the container using the following command:
 
 ```bash
-    docker run -d -p 80:80 earsavant
+docker run -d -p 80:80 earsavant
 ```
 The -d flag runs the container in detached mode, and -p 80:80 maps port 80 of the host to port 80 of the container. Modify the port mapping as needed.
 
@@ -105,7 +105,7 @@ If you make changes to your Angular app and want to update the deployment, follo
 1. Build a new Docker image as shown above:
 
 ```bash
-    docker build -t earsavant .
+docker build -t earsavant .
 ```
 
 
@@ -114,15 +114,15 @@ If you make changes to your Angular app and want to update the deployment, follo
 2. Stop and remove the existing container:
 
 ```bash
-    docker stop CONTAINER_ID
-    docker rm CONTAINER_ID
+docker stop CONTAINER_ID
+docker rm CONTAINER_ID
 ```
 Replace CONTAINER_ID with the actual ID of the running container.
 
 3. Run the new Docker container using the updated image:
 
 ```bash
-    docker run -d -p 80:80 earsavant
+docker run -d -p 80:80 earsavant
 ```
 
 
