@@ -17,12 +17,13 @@
 
 .cet-functional-wrapper {
   padding-top: 10px;
+  padding-inline: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   height: calc(100% - 161px);
-  gap: 30px;
+  gap: 10px;
   position: relative;
 
   h2 {
@@ -57,4 +58,17 @@
   flex-direction: row;
   align-items: center;
   gap: 3px;
+}
+
+.cet-start-button {
+  height: 66px;
+  padding-inline: 10px;
+  font-size: 24px;
+  border-radius: 10px;
+}
+
+.cet-start-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
 }
