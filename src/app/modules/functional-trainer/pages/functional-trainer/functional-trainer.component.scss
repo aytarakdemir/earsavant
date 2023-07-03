@@ -16,11 +16,12 @@
 }
 
 .cet-functional-wrapper {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: calc(100% - 151px);
+  justify-content: flex-start;
+  height: calc(100% - 161px);
   gap: 30px;
   position: relative;
 

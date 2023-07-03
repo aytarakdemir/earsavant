@@ -1,97 +1,124 @@
-<form [formGroup]="configForm">
-  <div>
-    <label for="octaveConfigLow">Octave Config Low:</label>
-    <input
-      type="number"
-      id="octaveConfigLow"
-      formControlName="octaveConfigLow"
-    />
-  </div>
 
-  <div>
-    <label for="octaveConfigHigh">Octave Config High:</label>
-    <input
-      type="number"
-      id="octaveConfigHigh"
-      formControlName="octaveConfigHigh"
-    />
-  </div>
-  <div>
-    <label for="walk-mode">Walk Mode:</label>
-    <select name="walk-mode" id="walk-mode" formControlName="walkMode">
-      <option value="{{ WalkMode.ToRoot }}">To Root</option>
-      <option value="{{ WalkMode.FromRoot }}">From Root</option>
-      <option value="{{ WalkMode.JumpToRoot }}">Jump to Root</option>
-      <option value="{{ WalkMode.NoWalk }}">No Walk</option>
-    </select>
-  </div>
-
-  <div>
-    <label>Scale Config:</label>
-    <div class="scale-checkboxes" formArrayName="scaleConfig">
-      <div
-        *ngFor="
-          let scaleControl of scaleConfigFormArray.controls;
-          let i = index
-        "
-      >
-        <input type="checkbox" [formControlName]="i" />
-        <label>{{ this.keySrv.solfegeList[i] }}</label>
+  <h2>Presets</h2>
+  <form [formGroup]="configForm">
+    <div class="cet-config-wrapper">
+      <div class="cet-preset-belt">
+        <button (click)="this.configSrv.aa()">Preset1</button>
+        <button (click)="this.configSrv.aa()">Preset2</button>
+        <button (click)="this.configSrv.aa()">Preset3</button>
+        <button (click)="this.configSrv.aa()">Preset3</button>
       </div>
-    </div>
-  </div>
+      <div class="cet-configure-wrapper">
+        <h2>Configure</h2>
 
-  <div>
-    <label>Possible Random Notes:</label>
-    <div class="possible-checkboxes" formArrayName="possibleRandomNotesConfig">
-      <div
-        *ngFor="
-          let noteControl of scaleConfigFormArray.controls;
-          let i = index
-        "
-      >
-        <ng-container *ngIf="scaleConfigFormArray.controls[i].value">
-          <input type="checkbox" [formControlName]="i" />
-          <label>{{ this.keySrv.solfegeList[i] }}</label>
-        </ng-container>
-      </div>
-    </div>
-  </div>
+        <div class="cet-configure-inner">
 
-  <div>
-    <label>Chord Progression Randomize Octaves?</label>
-    <input type="checkbox" formControlName="chordsProgressionRandom">
-  </div>
-  <div>
-    <label>Show Chords Chromatic</label>
-    <input type="checkbox" formControlName="showChordsChromatic">
-  </div>
-  <div>
-    <label>Chord Progression:</label>
-    <div class="scale-checkboxes" formArrayName="chordsProgressionConfig">
-      <div
-        *ngFor="
-          let chordsProgression of chordsProgressionConfigFormArray.controls;
-          let i = index
-        "
-      >
-        <div [formGroupName]="i">
-          <div formArrayName="chordNotes">
-            <div *ngFor="let chordNotes of chordNotes.controls; let j = index" >
-              <ng-container *ngIf="this.configForm.controls['showChordsChromatic'].value || this.scaleConfigFormArray.controls[j].value">
-                <input type="checkbox" [formControlName]="j" />
-                <label [class.not-in-key]="!this.scaleConfigFormArray.controls[j].value">{{ this.keySrv.solfegeList[j] }}</label>
-              </ng-container>
+          <div class="cet-scroll-wrapper">
+            <div>
+              <label for="presetName">Name:</label>
+              <input type="text" id="presetName" formControlName="presetName"/>
             </div>
+            <div>
+              <label for="octaveConfigLow">Octave Config Low:</label>
+              <input
+                type="number"
+                id="octaveConfigLow"
+                formControlName="octaveConfigLow"
+              />
+            </div>
+            <div>
+              <label for="octaveConfigHigh">Octave Config High:</label>
+              <input
+                type="number"
+                id="octaveConfigHigh"
+                formControlName="octaveConfigHigh"
+              />
+            </div>
+            <div>
+              <label for="walk-mode">Walk Mode:</label>
+              <select name="walk-mode" id="walk-mode" formControlName="walkMode">
+                <option value="{{ WalkMode.ToRoot }}">To Root</option>
+                <option value="{{ WalkMode.FromRoot }}">From Root</option>
+                <option value="{{ WalkMode.JumpToRoot }}">Jump to Root</option>
+                <option value="{{ WalkMode.NoWalk }}">No Walk</option>
+              </select>
+            </div>
+          
+            <div>
+              <label>Scale Config:</label>
+              <div class="scale-checkboxes" formArrayName="scaleConfig">
+                <div
+                  *ngFor="
+                    let scaleControl of scaleConfigFormArray.controls;
+                    let i = index
+                  "
+                >
+                  <input type="checkbox" [formControlName]="i" />
+                  <label>{{ this.keySrv.solfegeList[i] }}</label>
+                </div>
+              </div>
+            </div>
+          
+            <div>
+              <label>Possible Random Notes:</label>
+              <div class="possible-checkboxes" formArrayName="possibleRandomNotesConfig">
+                <div
+                  *ngFor="
+                    let noteControl of scaleConfigFormArray.controls;
+                    let i = index
+                  "
+                >
+                  <ng-container *ngIf="scaleConfigFormArray.controls[i].value">
+                    <input type="checkbox" [formControlName]="i" />
+                    <label>{{ this.keySrv.solfegeList[i] }}</label>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          
+            <div>
+              <label>Chord Progression Randomize Octaves?</label>
+              <input type="checkbox" formControlName="chordsProgressionRandom">
+            </div>
+            <div>
+              <label>Show Chords Chromatic</label>
+              <input type="checkbox" formControlName="showChordsChromatic">
+            </div>
+            <div>
+              <label>Chord Progression:</label>
+              <div class="scale-checkboxes" formArrayName="chordsProgressionConfig">
+                <div
+                  *ngFor="
+                    let chordsProgression of chordsProgressionConfigFormArray.controls;
+                    let i = index
+                  "
+                >
+                  <div [formGroupName]="i">
+                    <div formArrayName="chordNotes">
+                      <div *ngFor="let chordNotes of chordNotes.controls; let j = index" >
+                        <ng-container *ngIf="this.configForm.controls['showChordsChromatic'].value || this.scaleConfigFormArray.controls[j].value">
+                          <input type="checkbox" [formControlName]="j" />
+                          <label [class.not-in-key]="!this.scaleConfigFormArray.controls[j].value">{{ this.keySrv.solfegeList[j] }}</label>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <button (click)="removeNestedFormGroup(i)" *ngIf="this.chordsProgressionConfigFormArray.controls.length > 1">Delete</button>
+                </div>
+              </div>
+            </div>
+            <button (click)="addNestedFormGroup()">Add Chord</button>
+
           </div>
+  
+
         </div>
-        <button (click)="removeNestedFormGroup(i)" *ngIf="this.chordsProgressionConfigFormArray.controls.length > 1">Delete</button>
+
       </div>
+
+        
     </div>
-  </div>
-  <button (click)="addNestedFormGroup()">Add Chord</button>
-
-  <button (click)="this.configSrv.aa()">aa</button>
-</form>
-
-<button (click)="apply()">Apply</button>
+    
+  </form>
+  
+  <button (click)="apply()">Apply</button>

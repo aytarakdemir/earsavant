@@ -19,6 +19,7 @@ export class ConfigurationPanelComponent {
 
   constructor(public keySrv: KeyService, private formBuilder: FormBuilder, public configSrv: ConfigService) {
     this.configForm = this.formBuilder.group({
+      presetName: '',
       octaveConfigLow: '',
       octaveConfigHigh: '',
       scaleConfig: this.formBuilder.array([false,false,false,false,false,false,false,false,false,false,false,false]),

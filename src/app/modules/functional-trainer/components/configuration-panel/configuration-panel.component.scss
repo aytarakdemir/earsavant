@@ -1,3 +1,22 @@
+@use "/src/styles/variables.scss" as var;
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cet-config-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    gap:10px;
+}
 
 .check-group {
     display: flex;
@@ -16,4 +35,56 @@
 
 .not-in-key {
     opacity: 0.5;
+}
+
+.cet-preset-belt {
+    width: 100%;
+    height: 57px;
+    border-block: solid var.$color-alpha-accent 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    gap: 6px;
+    box-shadow: 0px 4px 0px 0px #000; 
+
+
+    button {
+        height: 40px;
+        width: 130px;
+        min-width: 130px;
+        border-radius: 10px;
+    }
+}
+
+.cet-configure-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+
+    
+}
+
+
+.cet-configure-inner {
+    border: 3px solid var.$color-alpha-accent;
+    box-shadow: 4px 4px 0px 0px #000; 
+    border-radius: 10px;
+    height: calc(100vh - 450px);
+
+    
+    padding: 5px;
+
+    .cet-scroll-wrapper {
+        overflow-y: auto;
+        height: 100%;
+
+        >div {
+            padding: 5px;
+        }
+
+    }
+
+
 }

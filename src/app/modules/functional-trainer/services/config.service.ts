@@ -19,6 +19,7 @@ export class ConfigService {
 
   configObj: WritableSignal<any> = signal(
     {
+      presetName: 'preset',
       octaveConfigLow: 2,
       octaveConfigHigh: 6,
       scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
@@ -127,6 +128,7 @@ export class ConfigService {
 
   aa() {
     this.configObj.set({
+      presetName: 'aa1',
       octaveConfigLow: 2,
       octaveConfigHigh: 6,
       scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
