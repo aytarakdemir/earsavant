@@ -15,7 +15,6 @@
 
     <ng-container>
       <app-progress-info></app-progress-info>
-      <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
   
       <div class="cet-controls-wrapper">
         <div class="cet-scale">
@@ -34,23 +33,27 @@
             }}
           </button>
         </div>
-    
+        <div class="cet-question-belt">
+          <p>Question {{this.sessionSrv.activeQuestion + 1}} of {{this.sessionSrv.questionCount}}</p>
+        </div>
         <div class="cet-controls">
           <button
+            class="left"
             (click)="this.audioSrv.playNote(this.keySrv.selectedRandomNote())"
           >
             Note
           </button>
           <button
+          class="middle"
             (click)="
               this.audioSrv.playProgression(this.configSrv.chordProgressionConfig())
             "
           >
-            Play Progression
+            Reference
           </button>
-          <button [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
+          <button class="right" [disabled]="!this.sessionSrv.canProceedToTheNextQuestion || this.audioSrv.melodyActive() || this.audioSrv.chordProgressionActive()" (click)="setNewKey()">Next</button>
         </div>
-        <button (click)="this.sessionSrv.endSession()">End Session</button>
+        <button class="cet-give-up" (click)="this.sessionSrv.endSession()">Give up</button>
       </div>
 
     </ng-container>
