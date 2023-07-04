@@ -212,7 +212,7 @@ export class FunctionalTrainerComponent {
     this.audioSrv.start();
     this.keySrv.setScaleDegrees(this.configSrv.scaleConfig());
     this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig() );
-    this.sessionSrv.startSession(5);
+    this.sessionSrv.startSession(1);
     this.trainerStarted.set(true);
     
     

@@ -63,10 +63,16 @@
   </ng-container>
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.AfterSession">
-    <p>Fin</p>
     <app-progress-info></app-progress-info>
-    <p> {{this.sessionSrv.results.correctCount}} / {{this.sessionSrv.results.questionCount}}</p>
-    <button (click)="this.resetSession()">Restart</button>
-    <button routerLink="/home" (click)="this.resetSession()">To Main Menu</button>
+    <div class="cet-finish-wrapper">
+      <div class="cet-finish-belt">
+        <p>SCORE:</p>
+        <p> {{this.sessionSrv.results.correctCount}} / {{this.sessionSrv.results.questionCount}}</p>
+      </div>
+      <div class="cet-end-buttons-wrapper">
+        <button class="left" routerLink="/home" (click)="this.resetSession()">Main Menu</button>
+        <button class="right" (click)="this.resetSession()">Restart</button>
+      </div>
+    </div>
   </ng-container>
 </div>
