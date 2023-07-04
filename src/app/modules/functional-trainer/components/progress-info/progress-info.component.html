@@ -14,8 +14,8 @@
     ></div>
   </div>
   <div class="cet-current-info">
-    <p class="cet-incorrect-text" *ngIf="this.sessionSrv.activeQuestionState.wrongNoteIndexList">WRONG</p>
-    <p class="cet-correct-text" *ngIf="this.sessionSrv.correctGuess">CORRECT!</p>
+    <p class="cet-incorrect-text" *ngIf="this.sessionSrv.activeQuestionState.wrongNoteIndexList && this.sessionSrv.state() === SessionState.Active">WRONG</p>
+    <p class="cet-correct-text" *ngIf="this.sessionSrv.correctGuess && this.sessionSrv.state() === SessionState.Active">CORRECT!</p>
   </div>
 
 </div>

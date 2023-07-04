@@ -1,5 +1,5 @@
 import { Component, Signal, computed, signal } from '@angular/core';
-import { SessionService } from '../../services/session.service';
+import { SessionService, SessionState } from '../../services/session.service';
 
 @Component({
   selector: 'app-progress-info',
@@ -9,6 +9,8 @@ import { SessionService } from '../../services/session.service';
 export class ProgressInfoComponent {
 
   remainingBoxes: Signal<any[]> = signal([]);
+
+  SessionState = SessionState;
 
   constructor(public sessionSrv: SessionService) {
     this.remainingBoxes =  computed(() => 
