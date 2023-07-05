@@ -1,10 +1,11 @@
-import { Component, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
+import { Component, ViewChild, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
 import { SessionService, SessionState } from '../../services/session.service';
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
 import { ConfigService } from '../../services/config.service';
+import { ConfigurationPanelComponent } from '../../components/configuration-panel/configuration-panel.component';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -24,6 +25,8 @@ export class FunctionalTrainerComponent {
   msAfterUserIsAllowedToClick: number = this.msMelodySpeed;
 
   SessionState = SessionState;
+
+  @ViewChild(ConfigurationPanelComponent) configComponent: any;
 
 
   constructor(
@@ -208,11 +211,12 @@ export class FunctionalTrainerComponent {
   }
 
   initialize() {
+    this.configSrv.configObj.set(this.configComponent.configForm.value);
     this.loadingSrv.showLoading();
     this.audioSrv.start();
     this.keySrv.setScaleDegrees(this.configSrv.scaleConfig());
     this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig() );
-    this.sessionSrv.startSession(1);
+    this.sessionSrv.startSession(10);
     this.trainerStarted.set(true);
     
     

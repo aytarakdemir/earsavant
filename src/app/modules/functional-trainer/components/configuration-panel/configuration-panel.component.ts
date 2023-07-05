@@ -12,7 +12,7 @@ import { ConfigService } from '../../services/config.service';
   styleUrls: ['./configuration-panel.component.scss']
 })
 export class ConfigurationPanelComponent {
-  configForm: FormGroup;
+  public configForm: FormGroup;
 
   WalkMode = WalkMode;
   possibleNotesSubscription: any;
@@ -57,9 +57,7 @@ export class ConfigurationPanelComponent {
   
   }
   
-  apply() {
-    this.configSrv.configObj.set(this.configForm.value);
-  }
+
 
   createChordFormGroup(): FormGroup {
     return this.formBuilder.group({

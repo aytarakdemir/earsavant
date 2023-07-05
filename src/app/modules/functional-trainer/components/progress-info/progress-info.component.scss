@@ -26,6 +26,7 @@
 .box {
   width: 36px;
   height: 36px;
+  min-width: 36px;
   background-color: var.$color-alpha;
   border-radius: 10px;
   box-shadow: 3px 3px 0px 0px #000; 
