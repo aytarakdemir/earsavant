@@ -4,4 +4,4 @@ WORKDIR /app
 COPY package*.json /app/
 RUN npm install
 COPY ./ /app/
-CMD ["npm", "run", "start"]
+CMD ["node_modules/.bin/ng", "serve", "--host", "0.0.0.0", "--poll", "5000"]
