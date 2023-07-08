@@ -60,7 +60,34 @@ git checkout -b feature/my-feature
 
 5. Create a pull request on the original repository.
 
-## Deployment
+
+## Development with Docker
+
+Dockerfile.dev is provided for setting up development container using Docker.
+
+To use the container for development, follow these steps:
+
+1. Install Docker: Make sure you have Docker installed on your system. Refer to the official Docker documentation for instructions on how to install Docker for your operating system.
+
+2. Build the Docker image: Open a terminal or command prompt and navigate to the directory where the Dockerfile is located. Run the following command to build the Docker image:
+
+```bash
+docker build -t earsavant -f Dockerfile.dev .
+```
+
+3. Run the Docker container: Once the image is built, you can run the container using the following command:
+
+```bash
+docker run -dp 4200:4200 -v ${PWD}:/app/ earsavant
+```
+
+This command starts the Docker container in the background (-d option) and maps port 4200 from the host to port 4200 in the container (-p 4200:4200 option). It also mounts the current working directory (${PWD}) on the host to the /app/ directory inside the container (-v ${PWD}:/app/ option).
+
+4. Access the application: After the container is running, you can access the application by opening a web browser and navigating to http://localhost:4200. Any changes you make to the project files on the host will be reflected in the running container due to the volume mount.
+
+5. Development workflow: Use your preferred code editor or IDE on the host machine to edit the project files. The changes will be automatically synchronized with the running container, allowing you to see the updates in real-time. You can leverage the hot module replacement feature provided by Angular to enable live reloading of the application as you make changes.
+
+## Deployment with Docker
 
 To deploy the Angular app using Docker and Nginx, follow the steps below:
 
@@ -90,43 +117,6 @@ docker run -d -p 80:80 earsavant
 The -d flag runs the container in detached mode, and -p 80:80 maps port 80 of the host to port 80 of the container. Modify the port mapping as needed.
 
 The application should now be accessible at http://localhost:80.
-
-### Custom Nginx Configuration
-
-The Dockerfile in this repository includes an nginx.conf file that configures the Nginx server. If you need to customize Nginx behavior, you can modify this configuration file to suit your requirements.
-
-### Production Build
-
-The Dockerfile uses multi-stage builds to keep the final image lightweight. The Angular app is built in the first stage and then served by Nginx in the second stage. This ensures that only the necessary files are included in the final image, optimizing deployment.
-Updating the Deployment
-
-If you make changes to your Angular app and want to update the deployment, follow these steps:
-
-1. Build a new Docker image as shown above:
-
-```bash
-docker build -t earsavant .
-```
-
-
-
-
-2. Stop and remove the existing container:
-
-```bash
-docker stop CONTAINER_ID
-docker rm CONTAINER_ID
-```
-Replace CONTAINER_ID with the actual ID of the running container.
-
-3. Run the new Docker container using the updated image:
-
-```bash
-docker run -d -p 80:80 earsavant
-```
-
-
-Earsavant should now be updated and running in the Docker container, accessible at http://localhost:80.
 
 ## License
 
