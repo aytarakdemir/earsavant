@@ -4,7 +4,8 @@
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.FirstInit">
     <app-configuration-panel></app-configuration-panel>
     <div class="cet-start-wrapper">
-      <button class="cet-start-button cet-important-button" (click)="initialize()" >START</button>
+      <button class="cet-large-button cet-important-button" (click)="initialize()" >START</button>
+      <button class="cet-large-button" (click)="this.configSrv.addNewPreset(this.configComponent.configForm.value)">Save Preset</button>
     </div>
   </ng-container>
 

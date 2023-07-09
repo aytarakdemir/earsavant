@@ -103,20 +103,22 @@
 
 }
 
-.cet-start-button {
+.cet-large-button {
   height: 66px;
   padding-inline: 10px;
   font-size: 24px;
   border-radius: 10px;
+  max-width: 130px;
 }
 
 .cet-start-wrapper {
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: row-reverse;
+  justify-content: space-between;
   position: fixed;
   bottom: 85px;
-  padding-right: 20px;
+
 }
 
 .cet-question-belt {
