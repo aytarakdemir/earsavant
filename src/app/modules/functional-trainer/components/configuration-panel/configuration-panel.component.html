@@ -3,10 +3,8 @@
   <form [formGroup]="configForm">
     <div class="cet-config-wrapper">
       <div class="cet-preset-belt">
-        <button (click)="this.configSrv.aa()">Preset1</button>
-        <button (click)="this.configSrv.aa()">Preset2</button>
-        <button (click)="this.configSrv.aa()">Preset3</button>
-        <button (click)="this.configSrv.aa()">Preset3</button>
+        <button *ngFor="let preset of this.configSrv.presets | keyvalue" (click)="this.configSrv.setActivePreset(preset.key)">{{preset.value.name}}</button>
+
       </div>
       <div class="cet-configure-wrapper">
         <h2>Configure</h2>
@@ -15,8 +13,8 @@
 
           <div class="cet-scroll-wrapper">
             <div>
-              <label for="presetName">Name:</label>
-              <input type="text" id="presetName" formControlName="presetName"/>
+              <label for="name">Name:</label>
+              <input type="text" id="name" formControlName="name"/>
             </div>
             <div>
               <label for="octaveConfigLow">Octave Config Low:</label>

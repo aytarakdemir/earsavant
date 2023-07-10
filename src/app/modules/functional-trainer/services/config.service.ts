@@ -4,6 +4,19 @@ import { KeyService } from 'src/app/shared/services/key/key.service';
 import { WalkMode } from '../pages/functional-trainer/functional-trainer.component';
 
 
+export class Preset {
+  name!: string;
+  octaveConfigLow: number = 2;
+  octaveConfigHigh: number = 6;
+  scaleConfig!: any[];
+  possibleRandomNotesConfig!: any[];
+  walkMode: WalkMode = WalkMode.ToRoot;
+  chordsProgressionConfig: {chordNotes: any[]}[] = [];
+  chordsProgressionRandom: boolean = false;
+  showChordsChromatic: boolean = false;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,9 +30,14 @@ export class ConfigService {
 
   chordsWithIndex: number[][] = [[]];
 
-  configObj: WritableSignal<any> = signal(
+
+  presets: Map<string, Preset> = new Map<string,Preset>();
+
+  activePresetId: string = this.generateRandomPresetId();
+
+  configObj: WritableSignal<Preset> = signal(
     {
-      presetName: 'preset',
+      name: 'preset',
       octaveConfigLow: 2,
       octaveConfigHigh: 6,
       scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
@@ -125,26 +143,28 @@ export class ConfigService {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  addNewPreset(preset: any) {
-    console.log(preset);
+  addNewPreset(preset: Preset) {
+    const key = this.generateRandomPresetId();
+    this.presets.set(key, preset);
+    this.activePresetId = key;
+    console.log(Object.fromEntries(this.presets.entries()));
   }
 
-
-  aa() {
-    this.configObj.set({
-      presetName: 'aa1',
-      octaveConfigLow: 2,
-      octaveConfigHigh: 6,
-      scaleConfig: [true,false,true,false,true,true,false,true,false,true,false,true],
-      possibleRandomNotesConfig: [true,null,true,null,true,true,null,true,null,true,null,true],
-      walkMode: WalkMode.ToRoot,
-      chordsProgressionConfig: [{chordNotes: [true,false,false,false,true,false,false,true,false,false,false,false]},
-      {chordNotes: [true,false,false,false,false,true,false,false,false,true,false,false]},
-      {chordNotes: [true,false,false,false,true,false,false,true,false,false,false,false]},
-      {chordNotes: [true,false,false,false,false,true,false,false,false,true,false,false]}],
-      chordsProgressionRandom: true,
-      showChordsChromatic: false
-    })
+  setActivePreset(presetKey: string) {
+    this.configObj.set(this.presets.get(presetKey) ?? this.configObj());
+    this.activePresetId = presetKey;
   }
 
+  removePreset() {
+    this.presets.delete(this.activePresetId);
+    this.setActivePreset(this.presets.keys().next().value);
+  }
+
+  applyChangesToActivePreset(key: string, formValue: Preset) {
+    this.presets.set(key, formValue ?? this.configObj());
+  }
+
+  generateRandomPresetId() {
+    return Date.now().toString() + Math.random().toString().substring(5);
+  }
 }

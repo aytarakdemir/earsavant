@@ -111,6 +111,14 @@
   max-width: 130px;
 }
 
+.cet-button-remove {
+  position: absolute;
+  right: 10px;
+  top: 110px;
+  background-color: var.$color-delta;
+  height: 30px;
+}
+
 .cet-start-wrapper {
   width: 95%;
   display: flex;
