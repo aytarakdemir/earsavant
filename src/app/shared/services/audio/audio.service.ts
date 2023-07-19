@@ -25,11 +25,10 @@ export class AudioService {
     if (Tone.Transport.state !== "started") {
       Tone.start();
     }
-    Tone.Destination.volume.value = -5;
 
     this.sampler = new Tone.Sampler({
-      urls: {
-        "C6": "C6.mp3",
+    urls: {
+      "C6": "C6.mp3",
         "D#6": "Ds6.mp3",
         "F#6": "Fs6.mp3",
         "A6": "A6.mp3",
@@ -59,6 +58,8 @@ export class AudioService {
       baseUrl: "https://tonejs.github.io/audio/salamander/",
       onload: () => {
         this.samplerReady.set(true);
+        this.sampler.context.resume();
+
       }
     }).toDestination();
   }

@@ -1,4 +1,12 @@
-import { Component, ViewChild, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  WritableSignal,
+  computed,
+  effect,
+  signal,
+  untracked,
+} from '@angular/core';
 import { AudioService } from 'src/app/shared/services/audio/audio.service';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import * as _ from 'lodash';
@@ -28,7 +36,6 @@ export class FunctionalTrainerComponent {
 
   @ViewChild(ConfigurationPanelComponent) configComponent: any;
 
-
   constructor(
     public audioSrv: AudioService,
     public keySrv: KeyService,
@@ -36,30 +43,25 @@ export class FunctionalTrainerComponent {
     public loadingSrv: LoadingService,
     public configSrv: ConfigService
   ) {
-
     effect(async () => {
       if (this.audioSrv.samplerReady()) {
-        untracked(()=> {
+        untracked(() => {
           this.loadingSrv.hideLoading();
           this.playSelectedProgressionAndNote();
-
-        })
+        });
       }
     });
     effect(async () => {
-      this.configSrv.chordProgressionConfig()
-        untracked(()=> {
-          if (this.sessionSrv.state() === SessionState.Active && this.audioSrv.samplerReady()) {
-            this.playSelectedProgressionAndNote();
-      
-          }
-        })
-
-      
-      
+      this.configSrv.chordProgressionConfig();
+      untracked(() => {
+        if (
+          this.sessionSrv.state() === SessionState.Active &&
+          this.audioSrv.samplerReady()
+        ) {
+          this.playSelectedProgressionAndNote();
+        }
+      });
     });
-
-
   }
 
   ngOnInit() {
@@ -67,27 +69,31 @@ export class FunctionalTrainerComponent {
   }
 
   setNewKey() {
-    this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig());
+    this.keySrv.randomizeWorkingKey(
+      this.configSrv.possibleRandomNotesConfig(),
+      this.configSrv.octaveConfig()
+    );
     this.guessFeedback.set(GuessState.default);
     this.sessionSrv.goToNextQuestion();
-
-
   }
 
   playSelectedProgressionAndNote() {
     console.log(this.configSrv.chordProgressionConfig());
-    this.audioSrv.playProgression(
-      this.configSrv.chordProgressionConfig()
-    );
+    this.audioSrv.playProgression(this.configSrv.chordProgressionConfig());
 
-    this.audioSrv.playNote(this.keySrv.selectedRandomNote(), this.configSrv.chordProgressionConfig().length * this.msMelodySpeed / 1000 + 0.5);
+    this.audioSrv.playNote(
+      this.keySrv.selectedRandomNote(),
+      (this.configSrv.chordProgressionConfig().length * this.msMelodySpeed) /
+        1000 +
+        0.5
+    );
   }
 
   userGuess(note: string) {
     if (this.coloringActive()) return;
     const guessNote = note.slice(0, -1);
     const correctNote = this.keySrv.selectedRandomNote().slice(0, -1);
-    
+
     this.sessionSrv.guess(correctNote, guessNote);
     if (guessNote === correctNote) {
       this.guessFeedback.set(GuessState.success);
@@ -96,18 +102,21 @@ export class FunctionalTrainerComponent {
           Number(this.keySrv.selectedRandomNote().slice(-1))
       );
 
-      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(keyToWalkOn, this.configSrv.walkModeConfig());
-      const notesToWalkOn = this.getNotesToWalkOn(keyToWalkOn, this.configSrv.walkModeConfig());
+      const noteIndicesToWalkOn = this.getNotesIndicesToWalkOn(
+        keyToWalkOn,
+        this.configSrv.walkModeConfig()
+      );
+      const notesToWalkOn = this.getNotesToWalkOn(
+        keyToWalkOn,
+        this.configSrv.walkModeConfig()
+      );
 
       this.audioSrv.playMelody(
         notesToWalkOn,
         this.msMelodySpeed * 0.001,
         this.msMelodySpeed * 0.001
       );
-      this.colorPlaying(
-        noteIndicesToWalkOn,
-        this.msMelodySpeed
-      );
+      this.colorPlaying(noteIndicesToWalkOn, this.msMelodySpeed);
     } else {
       this.guessFeedback.set(GuessState.failure);
 
@@ -126,11 +135,13 @@ export class FunctionalTrainerComponent {
   getNotesToWalkOn(keyToWalkOn: string[], walkMode: WalkMode) {
     let resultNotes;
 
-    if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
-    keyToWalkOn.length / 2) {
+    if (
+      keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
+      keyToWalkOn.length / 2
+    ) {
       resultNotes = keyToWalkOn
-            .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
-            .reverse();
+        .slice(0, keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) + 1)
+        .reverse();
     } else {
       resultNotes = keyToWalkOn.slice(
         keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
@@ -140,13 +151,18 @@ export class FunctionalTrainerComponent {
 
     return this.transformResultForSelectedWalkMode(resultNotes, walkMode);
   }
-  
+
   getNotesIndicesToWalkOn(keyToWalkOn: string[], walkMode: WalkMode) {
     let resultNotes;
 
-    if (keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
-    keyToWalkOn.length / 2) {
-      resultNotes = _.range(keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()), -1);
+    if (
+      keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()) <
+      keyToWalkOn.length / 2
+    ) {
+      resultNotes = _.range(
+        keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
+        -1
+      );
     } else {
       resultNotes = _.range(
         keyToWalkOn.indexOf(this.keySrv.selectedRandomNote()),
@@ -155,9 +171,8 @@ export class FunctionalTrainerComponent {
     }
 
     return this.transformResultForSelectedWalkMode(resultNotes, walkMode);
-    
   }
-  
+
   transformResultForSelectedWalkMode(resultNotes: any[], walkMode: WalkMode) {
     switch (walkMode) {
       case WalkMode.ToRoot:
@@ -167,8 +182,8 @@ export class FunctionalTrainerComponent {
       case WalkMode.JumpToRoot:
         let ret = [];
         ret.push(resultNotes[0]);
-        if (resultNotes[0] !== resultNotes[resultNotes.length-1]) {
-          ret.push(resultNotes[resultNotes.length-1]);
+        if (resultNotes[0] !== resultNotes[resultNotes.length - 1]) {
+          ret.push(resultNotes[resultNotes.length - 1]);
         }
         return ret;
       case WalkMode.NoWalk:
@@ -180,7 +195,7 @@ export class FunctionalTrainerComponent {
 
   colorPlaying(indices: number[], time: number) {
     if (this.coloringActive()) return;
-    
+
     this.coloringActive.set(true);
     indices.forEach((i, index) => {
       let note = document.getElementById('note-' + i);
@@ -197,7 +212,6 @@ export class FunctionalTrainerComponent {
     setTimeout(() => {
       this.coloringActive.set(false);
     }, indices.length * time + this.msAfterUserIsAllowedToClick);
-    
   }
 
   changeOctave(amount: number) {
@@ -209,17 +223,21 @@ export class FunctionalTrainerComponent {
     });
     return modifiedNoteList;
   }
-
+  
   initialize() {
     this.configSrv.configObj.set(this.configComponent.configForm.value);
     this.loadingSrv.showLoading();
-    this.audioSrv.start();
-    this.keySrv.setScaleDegrees(this.configSrv.scaleConfig());
-    this.keySrv.randomizeWorkingKey(this.configSrv.possibleRandomNotesConfig(), this.configSrv.octaveConfig() );
-    this.sessionSrv.startSession(10);
-    this.trainerStarted.set(true);
-    
-    
+
+    setTimeout(() => {
+      this.audioSrv.start();    
+      this.keySrv.setScaleDegrees(this.configSrv.scaleConfig());
+      this.keySrv.randomizeWorkingKey(
+        this.configSrv.possibleRandomNotesConfig(),
+        this.configSrv.octaveConfig()
+      );
+      this.sessionSrv.startSession(10);
+      this.trainerStarted.set(true);
+    }, 1000);
   }
 
   resetSession() {
