@@ -1,8 +1,8 @@
 <div class="cet-home-wrapper">
 
     <div class="cet-top-belt">
-        <button class="cet-mini-button cet-important-button" (click)="a()">Sign Up</button>
-        <button class="cet-mini-button" (click)="b()">Log In</button>
+        <button class="cet-mini-button cet-important-button" (click)="register()">Sign Up</button>
+        <button class="cet-mini-button" onclick="loginModal.showModal()">Log In</button>
     </div>
 
     <div class="cet-menu-track">
@@ -23,8 +23,24 @@
     </div>
 </div>
 
+<dialog id="loginModal">
+    <form [formGroup]="loginForm" (submit)="login()" onsubmit="return false">
+        <div class="cet-modal-field">
+            <label for="usernameLogin">Username</label>
+            <input formControlName="username" id="usernameLogin" type="text">            
+        </div>
+        <div class="cet-modal-field">
+            <label for="passwordLogin">Password</label>
+            <input formControlName="password" id="passwordLogin" type="password">            
+        </div>
 
-<!-- <div class="cet-menu">
-</div> -->
+        <div class="cet-modal-controls">
+            <button type='button' onclick="loginModal.close()">Cancel</button>
+            <button type="submit" class="cet-important-button">Log In</button>
+
+        </div>
+    </form>
+</dialog>
+
 
 
