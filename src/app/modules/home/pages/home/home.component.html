@@ -25,6 +25,7 @@
 
 <dialog id="loginModal">
     <form [formGroup]="loginForm" (submit)="login()" onsubmit="return false">
+        <h2>LOG IN</h2>
         <div class="cet-modal-field">
             <label for="usernameLogin">Username</label>
             <input formControlName="username" id="usernameLogin" type="text">            
