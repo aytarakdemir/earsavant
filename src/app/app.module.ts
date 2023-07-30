@@ -7,6 +7,9 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { LoadingComponent } from "./shared/components/loading/loading.component";
 import { BottomMenuComponent } from "./shared/components/bottom-menu/bottom-menu.component";
 import { HeaderComponent } from './shared/components/header/header.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
     declarations: [
@@ -21,7 +24,9 @@ import { HeaderComponent } from './shared/components/header/header.component';
         BrowserModule,
         AppRoutingModule,
         LoadingComponent,
-        BottomMenuComponent
+        BottomMenuComponent,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
     ]
 })
 export class AppModule { }

@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^16.1.1",
     "@angular/router": "^16.1.1",
     "lodash": "^4.17.21",
+    "ngx-toastr": "^17.0.2",
     "rxjs": "~7.8.0",
     "tone": "^14.7.77",
     "zone.js": "~0.13.1"

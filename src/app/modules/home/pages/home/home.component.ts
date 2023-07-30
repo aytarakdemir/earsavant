@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { BaseService } from 'src/app/core/base/base.service';
 import * as Tone from 'tone';
-
 
 @Component({
   selector: 'app-home',
@@ -12,27 +12,58 @@ import * as Tone from 'tone';
 })
 export class HomeComponent extends BaseService {
   public loginForm: UntypedFormGroup = new UntypedFormGroup({
-    username: new UntypedFormControl(''), 
+    username: new UntypedFormControl(''),
     password: new UntypedFormControl(''),
-  })
+  });
+  public registerForm: UntypedFormGroup = new UntypedFormGroup({
+    username: new UntypedFormControl(''),
+    password: new UntypedFormControl(''),
+    email: new UntypedFormControl(''),
+  });
 
-  constructor(protected override http: HttpClient) {
+  constructor(protected override http: HttpClient, private toastr: ToastrService) {
     super(http);
   }
-  
+
   register() {
-    this.post('http://localhost:3000/register', JSON.stringify({username: 'jcd', password: 'bionicman', email: 'jcd@unatco.gov'})).subscribe();
+    this.post(
+      'http://localhost:3000/register',
+      JSON.stringify({
+        username: this.registerForm.value.username,
+        password: this.registerForm.value.password,
+        email: this.registerForm.value.email,
+      })
+    ).subscribe(
+      (res) => {
+        console.log(res);
+        const modal = <HTMLDialogElement>(
+          document.getElementById('registerModal')
+        );
+        modal.close();
+      },
+      (err) => {
+        console.log('Register Error', err);
+        this.toastr.error(err.error.message, 'Register Error');
+      }
+    );
   }
 
   login() {
-    this.post('http://localhost:3000/login', JSON.stringify({username: this.loginForm.value.username, password: this.loginForm.value.password})).subscribe((res) => {
+    this.post(
+      'http://localhost:3000/login',
+      JSON.stringify({
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password,
+      })
+    ).subscribe(
+      (res) => {
         console.log(res);
-        console.log(this.loginForm.value);
         const modal = <HTMLDialogElement>document.getElementById('loginModal');
         modal.close();
       },
       (err) => {
         console.log('Login Error', err);
+        this.toastr.error(err.error.message, 'Login Error');
       }
     );
   }

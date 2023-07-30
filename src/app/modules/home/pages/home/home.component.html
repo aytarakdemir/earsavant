@@ -1,8 +1,8 @@
 <div class="cet-home-wrapper">
 
     <div class="cet-top-belt">
-        <button class="cet-mini-button cet-important-button" (click)="register()">Sign Up</button>
-        <button class="cet-mini-button" onclick="loginModal.showModal()">Log In</button>
+        <button class="cet-mini-button cet-important-button" onclick="registerModal.showModal()">Sign Up</button>
+        <button class="cet-mini-button" onclick="loginModal.showModal()">Login</button>
     </div>
 
     <div class="cet-menu-track">
@@ -25,7 +25,7 @@
 
 <dialog id="loginModal">
     <form [formGroup]="loginForm" (submit)="login()" onsubmit="return false">
-        <h2>LOG IN</h2>
+        <h2>LOGIN</h2>
         <div class="cet-modal-field">
             <label for="usernameLogin">Username</label>
             <input formControlName="username" id="usernameLogin" type="text">            
@@ -44,4 +44,26 @@
 </dialog>
 
 
+<dialog id="registerModal">
+    <form [formGroup]="registerForm" (submit)="register()" onsubmit="return false">
+        <h2>SIGN UP</h2>
+        <div class="cet-modal-field">
+            <label for="usernameRegister">Username</label>
+            <input formControlName="username" id="usernameRegister" type="text">            
+        </div>
+        <div class="cet-modal-field">
+            <label for="emailRegister">E-mail</label>
+            <input formControlName="email" id="emailRegister" type="email">            
+        </div>
+        <div class="cet-modal-field">
+            <label for="passwordRegister">Password</label>
+            <input formControlName="password" id="passwordRegister" type="password">            
+        </div>
+
+        <div class="cet-modal-controls">
+            <button type='button' onclick="registerModal.close()">Cancel</button>
+            <button type="submit" class="cet-important-button">Sign Up</button>
+        </div>
+    </form>
+</dialog>
 
