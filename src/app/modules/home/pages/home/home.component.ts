@@ -56,14 +56,27 @@ export class HomeComponent extends BaseService {
         password: this.loginForm.value.password,
       })
     ).subscribe(
-      (res) => {
+      (res : any) => {
         console.log(res);
+        this.toastr.success(res.message);
+        this.jwtToken = res.token;
         const modal = <HTMLDialogElement>document.getElementById('loginModal');
         modal.close();
       },
       (err) => {
         console.log('Login Error', err);
         this.toastr.error(err.error.message, 'Login Error');
+      }
+    );
+  }
+
+  go(){
+    this.post('http://localhost:3000/refresh_token', JSON.stringify({})).subscribe(
+      (res: any) => {
+        console.log('Success');
+      },
+      (err: any) => {
+        console.log('Error');
       }
     );
   }
