@@ -1,7 +1,11 @@
-import { Injectable, WritableSignal, effect, signal, untracked } from '@angular/core';
+import { Injectable, OnDestroy, WritableSignal, effect, signal, untracked } from '@angular/core';
 import * as _ from 'lodash';
 import { KeyService } from 'src/app/shared/services/key/key.service';
 import { WalkMode } from '../pages/functional-trainer/functional-trainer.component';
+import { BaseService } from 'src/app/core/base/base.service';
+import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject } from 'rxjs';
 
 
 export class Preset {
@@ -20,7 +24,7 @@ export class Preset {
 @Injectable({
   providedIn: 'root'
 })
-export class ConfigService {
+export class ConfigService extends BaseService implements OnDestroy {
   possibleRandomNotesConfig: WritableSignal<number[]> = signal([]);
   scaleConfig: WritableSignal<number[]> = signal([]);
   walkModeConfig: WritableSignal<WalkMode> = signal(WalkMode.ToRoot);
@@ -29,6 +33,8 @@ export class ConfigService {
 
 
   chordsWithIndex: number[][] = [[]];
+
+  destroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 
   presets: Map<string, Preset> = new Map<string,Preset>();
@@ -49,7 +55,11 @@ export class ConfigService {
     }
   );
 
-  constructor(private keySrv: KeyService) {
+  constructor(private keySrv: KeyService, 
+              protected override http: HttpClient,
+              private toastr: ToastrService) {
+    super(http);
+
     effect(()=> {
       this.configObj();
       untracked(()=> {
@@ -129,6 +139,49 @@ export class ConfigService {
         this.chordProgressionConfig.set(this.configObj().chordsProgressionRandom ? this.randomizeOctaves(chordsWithNotes) : chordsWithNotes);
       })
     })
+  }
+  ngOnDestroy(): void {
+    this.destroy.next(true);
+    this.destroy.complete();
+  }
+
+
+  sendPresets() {
+    console.log([...this.presets]);
+    this.post(
+      'http://localhost:3000/save_presets',
+      JSON.stringify({userID: localStorage.getItem('userId'), presets: [...this.presets]})
+    ).subscribe(
+      {
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log('Preset Error', err);
+          this.toastr.error(err.error.message, 'Preset Error');
+        }
+      }
+    );
+  }
+
+  getPresets() {
+    this.post(
+      'http://localhost:3000/get_presets',
+      JSON.stringify({userID: localStorage.getItem('userId')})
+    ).subscribe(
+      {
+        next: (res: any) => {
+          let presetList = JSON.parse(res.presets.preset_list);
+          let presetMap = new Map<string, any>(presetList);
+          console.log(presetMap);
+          this.presets = presetMap;
+        },
+        error: (err) => {
+          console.log('Preset Error', err);
+          this.toastr.error(err.error.message, 'Preset Error');
+        }
+      }
+    );
   }
 
   randomizeOctaves(chordProgression: string[][] ,octaveRange: {low: number, high: number} = {low: 2, high: 5}) {

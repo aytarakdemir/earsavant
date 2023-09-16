@@ -2,12 +2,12 @@
 
 
   <ng-container *ngIf="this.sessionSrv.state() === SessionState.FirstInit">
-    <button class="cet-button-remove" (click)="this.configSrv.removePreset()">Delete</button>
+    <button class="cet-button-remove" (click)="removePresetButton()">Delete</button>
     <app-configuration-panel></app-configuration-panel>
     <div class="cet-start-wrapper">
       <button class="cet-large-button cet-important-button" (click)="initialize()" >START</button>
-      <button class="cet-large-button" (click)="this.configSrv.addNewPreset(this.configComponent.configForm.value)">Add Preset</button>
-      <button class="cet-large-button" (click)="this.configSrv.applyChangesToActivePreset(this.configSrv.activePresetId, this.configComponent.configForm.value)">Apply Changes</button>
+      <button class="cet-large-button" (click)="addNewPresetButton()">Add Preset</button>
+      <button class="cet-large-button" (click)="applyPresetButton()">Apply Changes</button>
     </div>
   </ng-container>
 

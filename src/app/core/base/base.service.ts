@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export class BaseService {
-  protected jwtToken: string = '';
+  // protected jwtToken: string = '';
   constructor(protected http: HttpClient) { }
 
   protected get<T>(url: string, options?: any): Observable<T> {
@@ -17,9 +17,10 @@ export class BaseService {
 
 
   private getHeaders(): HttpHeaders {
+    
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.jwtToken}`
+      'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
     })
 
     return headers;

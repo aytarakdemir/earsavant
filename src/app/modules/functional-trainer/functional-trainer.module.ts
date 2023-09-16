@@ -7,6 +7,7 @@ import { ProgressInfoComponent } from './components/progress-info/progress-info.
 import { LoadingComponent } from 'src/app/shared/components/loading/loading.component';
 import { ConfigurationPanelComponent } from './components/configuration-panel/configuration-panel.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,9 +17,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     FunctionalTrainerRoutingModule,
     LoadingComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class FunctionalTrainerModule { }

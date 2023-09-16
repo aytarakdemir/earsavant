@@ -9,6 +9,7 @@ import { BottomMenuComponent } from "./shared/components/bottom-menu/bottom-menu
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         AppRoutingModule,
         LoadingComponent,
         BottomMenuComponent,
+        HttpClientModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
     ]

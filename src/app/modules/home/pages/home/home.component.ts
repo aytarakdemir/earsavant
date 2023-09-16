@@ -59,7 +59,7 @@ export class HomeComponent extends BaseService {
       (res : any) => {
         console.log(res);
         this.toastr.success(res.message);
-        this.jwtToken = res.token;
+        localStorage.setItem('userId', res.userID);
         const modal = <HTMLDialogElement>document.getElementById('loginModal');
         modal.close();
       },
@@ -71,12 +71,14 @@ export class HomeComponent extends BaseService {
   }
 
   go(){
-    this.post('http://localhost:3000/refresh_token', JSON.stringify({})).subscribe(
+    this.post('http://localhost:3000/check_authentication', JSON.stringify({})).subscribe(
       (res: any) => {
         console.log('Success');
+        console.log(res);
       },
       (err: any) => {
-        console.log('Error');
+        console.log(err.error.message);
+        this.toastr.error(err.error.message, 'User Timeout');
       }
     );
   }

@@ -66,6 +66,7 @@ export class FunctionalTrainerComponent {
 
   ngOnInit() {
     this.sessionSrv.resetSession();
+    this.configSrv.getPresets();
   }
 
   setNewKey() {
@@ -243,6 +244,23 @@ export class FunctionalTrainerComponent {
   resetSession() {
     this.sessionSrv.resetSession();
     this.audioSrv.samplerReady.set(false);
+  }
+
+
+  addNewPresetButton() {
+    this.configSrv.addNewPreset(this.configComponent.configForm.value)
+    this.configSrv.sendPresets();
+  }
+
+  applyPresetButton() {
+    this.configSrv.applyChangesToActivePreset(this.configSrv.activePresetId, this.configComponent.configForm.value)
+    this.configSrv.sendPresets();
+  }
+  
+  removePresetButton() {
+    this.configSrv.removePreset();
+    this.configSrv.sendPresets();
+
   }
 
   ngOnDestroy() {
