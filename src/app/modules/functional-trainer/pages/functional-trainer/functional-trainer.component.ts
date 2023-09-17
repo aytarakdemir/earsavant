@@ -14,6 +14,7 @@ import { SessionService, SessionState } from '../../services/session.service';
 import { LoadingService } from 'src/app/shared/services/loading/loading.service';
 import { ConfigService } from '../../services/config.service';
 import { ConfigurationPanelComponent } from '../../components/configuration-panel/configuration-panel.component';
+import { AuthenticationService } from 'src/app/shared/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-functional-trainer',
@@ -41,7 +42,8 @@ export class FunctionalTrainerComponent {
     public keySrv: KeyService,
     public sessionSrv: SessionService,
     public loadingSrv: LoadingService,
-    public configSrv: ConfigService
+    public configSrv: ConfigService,
+    public authenticationSrv: AuthenticationService
   ) {
     effect(async () => {
       if (this.audioSrv.samplerReady()) {

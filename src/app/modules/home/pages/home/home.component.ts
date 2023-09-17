@@ -71,18 +71,6 @@ export class HomeComponent extends BaseService {
     );
   }
 
-  go(){
-    this.post('http://localhost:3000/check_authentication', JSON.stringify({})).subscribe(
-      (res: any) => {
-        console.log('Success');
-        console.log(res);
-      },
-      (err: any) => {
-        console.log(err.error.message);
-        this.toastr.error(err.error.message, 'User Timeout');
-      }
-    );
-  }
 
   logout() {
     this.post('http://localhost:3000/logout', JSON.stringify({})).subscribe(
