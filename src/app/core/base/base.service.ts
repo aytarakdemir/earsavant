@@ -6,7 +6,7 @@ export class BaseService {
   constructor(protected http: HttpClient) { }
 
   protected get<T>(url: string, options?: any): Observable<T> {
-    const option: {headers: HttpHeaders} = {...options, headers: this.getHeaders()} 
+    const option: {headers: HttpHeaders} = {...options, headers: this.getHeaders(), withCredentials: true,} 
     return this.http.get<T>(url, option);
   }
 

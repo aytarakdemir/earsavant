@@ -81,6 +81,11 @@ button {
       opacity: 0.4;
       pointer-events: none;
     }
+    &.cet-danger-button {
+      background-color: $color-epsilon;
+      border: solid 2px $color-beta-accent;
+      color: $color-text-primary;
+    }
     &.cet-important-button {
       background-color: $color-beta;
       border: solid 2px $color-beta-accent;
@@ -98,4 +103,7 @@ dialog {
 
 }
 
+.greyed-out {
+  opacity: 0.3;
+}
 

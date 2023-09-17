@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { WalkMode } from '../../pages/functional-trainer/functional-trainer.component';
 import { ConfigService } from '../../services/config.service';
+import { AuthenticationService } from 'src/app/shared/services/authentication/authentication.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class ConfigurationPanelComponent {
   WalkMode = WalkMode;
   possibleNotesSubscription: any;
 
-  constructor(public keySrv: KeyService, private formBuilder: FormBuilder, public configSrv: ConfigService) {
+  constructor(public keySrv: KeyService, private formBuilder: FormBuilder, public configSrv: ConfigService, public authenticationSrv: AuthenticationService) {
     this.configForm = this.formBuilder.group({
       name: '',
       octaveConfigLow: '',

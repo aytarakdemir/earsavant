@@ -178,7 +178,6 @@ export class ConfigService extends BaseService implements OnDestroy {
         },
         error: (err) => {
           console.log('Preset Error', err);
-          this.toastr.error(err.error.message, 'Preset Error');
         }
       }
     );

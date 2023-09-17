@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from 'src/app/core/base/base.service';
+import { AuthenticationService } from 'src/app/shared/services/authentication/authentication.service';
 import * as Tone from 'tone';
 
 @Component({
@@ -21,7 +22,7 @@ export class HomeComponent extends BaseService {
     email: new UntypedFormControl(''),
   });
 
-  constructor(protected override http: HttpClient, private toastr: ToastrService) {
+  constructor(protected override http: HttpClient, private toastr: ToastrService, public authenticationSrv: AuthenticationService) {
     super(http);
   }
 
@@ -79,6 +80,17 @@ export class HomeComponent extends BaseService {
       (err: any) => {
         console.log(err.error.message);
         this.toastr.error(err.error.message, 'User Timeout');
+      }
+    );
+  }
+
+  logout() {
+    this.post('http://localhost:3000/logout', JSON.stringify({})).subscribe(
+      (res: any) => {
+        console.log(res);
+      },
+      (err: any) => {
+        console.log(err.error.message);
       }
     );
   }
